@@ -44,7 +44,7 @@ Pergunte **tudo de uma vez**, mesmo sem DNS pronto (desenvolve-se local e ativa 
 
 ## FASE 1 — Setup
 
-- Preencha o `config.json`: `project_name`, `project_slug`, `domain`, `client`, `tracking.gtm_id`, `whatsapp.*`, `forms.lead-form.webhooks[0]`, `forms.lead-form.preset`, `deploy.remote_path` (`/var/www/<dominio>`).
+- Preencha o `config.json`: `project_name`, `project_slug`, `domain`, `client`, `tracking.gtm_id`, `whatsapp.*`, `forms.lead-form.webhooks[0]`, `forms.lead-form.preset`, `deploy.remote_path` (`/var/www/<dominio>`). **Sem barra no fim:** `scripts/deploy-domain.mjs` valida o formato e aborta o `npm run deploy` e o workflow antes do `rsync --delete` (uma barra no fim já fez o rsync mirar `/var/www/` e apagar os sites de todos os clientes). Nunca remova essa validação.
 - Ajuste `astro.config.mjs > site` para o domínio.
 
 ## FASE 2 — Assets (imagens, fontes, vídeo)
