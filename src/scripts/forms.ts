@@ -1,4 +1,4 @@
-import { keyMap, trackingParamKeys, getPageSource } from './lead-payload';
+import { keyMap, trackingParamKeys, getPageSource, detectOrigem } from './lead-payload';
 
 // Captura o IP público do visitante uma única vez (memoizado). Em produção usa o
 // endpoint same-origin do Cloudflare (/cdn-cgi/trace), sem terceiros; cai no ipify
@@ -244,6 +244,7 @@ export function initForms() {
       const payload: Record<string, string> = {
         ...capitalizedFields,
         Fonte: fonte,
+        origem: detectOrigem(tracking),
         Data: dateStr,
         'Horário': timeStr,
         'URL da página': window.location.href,
