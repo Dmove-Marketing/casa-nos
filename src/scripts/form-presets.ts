@@ -28,6 +28,8 @@ export interface PresetField {
   /** texto de apoio no label, ex.: "não obrigatório" */
   hint?: string;
   options?: PresetFieldOption[];
+  /** campo condicional: só aparece (e vira obrigatório) quando o tipo de evento é do grupo indicado */
+  showWhen?: 'corporativo';
 }
 
 // —— Campo "Tipo de evento": sempre TODAS as opções do WhatsApp ——
@@ -74,9 +76,26 @@ const nucleo: PresetField[] = [
   detalhes,
 ];
 
-export const formPresets: Record<'social' | 'corporativo', PresetField[]> = {
+// —— Tipos de evento do grupo corporativo (usado pelo preset "geral") ——
+export const tiposCorporativos: string[] = [
+  'Confraternizacao corporativa',
+  'Corporativo',
+  'Feiras e Exposicoes',
+  'Masterclass e Palestras',
+  'Mentorias e Treinamentos',
+  'Offsite corporativo',
+  'Reunioes de Networking',
+  'Workshops, Conferencias e Seminarios',
+];
+
+// —— Preset "geral" (ex.: bio do Instagram): capta social e corporativo no mesmo formulário.
+// "Nome da empresa" aparece só quando o tipo de evento é corporativo (e então é obrigatório).
+const empresaCondicional: PresetField = { ...empresa, showWhen: 'corporativo', required: false };
+
+export const formPresets: Record<'social' | 'corporativo' | 'geral', PresetField[]> = {
   social: nucleo,
   corporativo: [empresa, ...nucleo],
+  geral: [...nucleo.slice(0, 4), empresaCondicional, ...nucleo.slice(4)],
 };
 
 // Mapa de funil (slug) → preset. Corporativos ganham o campo "empresa".
@@ -87,6 +106,7 @@ export const funnelPreset: Record<string, keyof typeof formPresets> = {
   formaturas: 'social',
   'eventos-corporativos': 'corporativo',
   'eventos-corporativos-confraternizacoes': 'corporativo',
+  bio: 'geral',
 };
 
 export function getPreset(name?: string): PresetField[] {

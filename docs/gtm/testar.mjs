@@ -101,11 +101,12 @@ async function formulario(url, formId, rotulo) {
   const { ctx, page, hooks, av } = await abrir(`${url}?utm_source=google&utm_campaign=teste-gtm&gclid=TESTE`);
   const f = `form[data-form-id="${formId}"]`;
   const tem = async (n) => (await page.locator(`${f} [name="${n}"]`).count()) > 0;
+  // tipo de evento primeiro: no preset "geral" o campo empresa só aparece para tipos corporativos
+  if (await tem('tipo_evento')) await page.selectOption(`${f} [name="tipo_evento"]`, 'Corporativo');
   if (await tem('empresa')) await page.fill(`${f} [name="empresa"]`, 'Agro Teste');
   await page.fill(`${f} [name="nome"]`, ' Ana  Maria Souza ');
   await page.fill(`${f} [name="telefone"]`, '(17) 99754-6177');
   await page.fill(`${f} [name="email"]`, 'Ana.Souza@Teste.com');
-  if (await tem('tipo_evento')) await page.selectOption(`${f} [name="tipo_evento"]`, 'Corporativo');
   if (await tem('data_evento')) await page.$eval(`${f} [name="data_evento"]`, (el) => { el.value = '20/12/2026'; });
   if (await tem('convidados')) await page.fill(`${f} [name="convidados"]`, '150');
   for (const s of await page.$$(`${f} select[required]`)) if (!(await s.inputValue())) await s.selectOption({ index: 1 });

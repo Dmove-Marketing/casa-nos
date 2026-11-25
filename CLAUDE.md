@@ -148,5 +148,5 @@ Prefira perguntar tudo o que puder **de uma vez** no início.
 ## Referência rápida
 
 - **VPS:** `157.173.197.116` · páginas em `/var/www/<dominio>` · CDN em `/var/www/media-storage/clients/<slug>/`
-- **Presets:** `social` (sem empresa) · `corporativo` (empresa 1º)
+- **Presets:** `social` (sem empresa) · `corporativo` (empresa 1º) · `geral` (social + corporativo; empresa só aparece p/ tipo corporativo, usado na `/bio`)
 - **Slugs:** `/casamentos /eventos-corporativos /eventos-corporativos-confraternizacoes /debutantes /aniversarios /formaturas`

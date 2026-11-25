@@ -1,0 +1,140 @@
+---
+// Formulário de lead no padrão Dmove: os campos vêm do preset (form-presets.ts) e o envio é do forms.ts.
+// Aqui só vive o visual do design da CasaNós (classes .form / .campo / .form-barra).
+import config from '../../config.json';
+import { getPreset } from '../scripts/form-presets';
+
+interface Props {
+  /** `social`, `corporativo` ou `geral` */
+  preset?: string;
+  /** vai em data-form-id (GTM/n8n) */
+  formId: string;
+  /** `cartao` = grade de 2 colunas; `barra` = título + tipo de evento no topo e campos em linha (hero) */
+  variant?: 'cartao' | 'barra';
+  /** prefixo dos ids dos campos (precisa ser único por formulário na página) */
+  idPrefix?: string;
+  /** tipo de evento já selecionado (valor de tipoEventoOptions) */
+  defaultTipo?: string;
+  buttonLabel?: string;
+  /** título do cartão (só variante barra) */
+  title?: string;
+  /** class extra no <form> */
+  class?: string;
+  /** substitui placeholders por campo */
+  placeholders?: Record<string, string>;
+}
+
+const {
+  preset = config.forms['lead-form'].preset,
+  formId,
+  variant = 'cartao',
+  idPrefix = 'form-field-',
+  defaultTipo,
+  buttonLabel = 'Solicitar orçamento',
+  title = 'Solicite orçamento',
+  class: extraClass = '',
+  placeholders = {},
+} = Astro.props;
+
+const submitUrl = config.forms['lead-form'].webhooks[0];
+const allFields = getPreset(preset);
+const fields = variant === 'barra' ? allFields.filter((f) => f.name !== 'tipo_evento' && f.name !== 'detalhes_adicionais') : allFields;
+const tipo = allFields.find((f) => f.name === 'tipo_evento')!;
+
+// linhas inteiras no cartão; os demais campos dividem a linha em pares
+const inteiros = new Set(['nome', 'tipo_evento', 'empresa', 'detalhes_adicionais']);
+const autocomplete: Record<string, string> = { nome: 'name', telefone: 'tel', email: 'email' };
+const inputmode: Record<string, string> = { telefone: 'tel', convidados: 'numeric' };
+
+const tipoOptions = tipo.options!.map((o) => ({
+  ...o,
+  selected: defaultTipo ? o.value === defaultTipo : o.selected,
+}));
+const id = (name: string) => `${idPrefix}${name}`;
+const fid = formId;
+---
+
+<div id={`${fid}-grid`}>
+  <form
+    class:list={['form', variant === 'barra' && 'form-barra', extraClass]}
+    method="post"
+    action="#"
+    novalidate
+    data-form-id={formId}
+    data-submit-url={submitUrl}
+    data-grid-id={`${fid}-grid`}
+    data-success-id={`${fid}-success`}
+  >
+    {variant === 'barra' && (
+      <div class="cartao-barra-topo">
+        <p class="cartao-titulo">{title}</p>
+        <div class="tipos">
+          <label class="tipos-rotulo" for={id('tipo_evento')}>Tipo de evento</label>
+          <div class="tipos-select">
+            <select id={id('tipo_evento')} name="tipo_evento" required>
+              {tipoOptions.map((o) => <option value={o.value} disabled={o.disabled} selected={o.selected}>{o.label}</option>)}
+            </select>
+          </div>
+        </div>
+      </div>
+    )}
+
+    <div class={variant === 'barra' ? 'campos-barra' : 'campos-cartao'}>
+      {fields.map((f) => {
+        const classes = [
+          'campo',
+          variant === 'cartao' && inteiros.has(f.name) && 'campo-inteiro',
+          variant === 'cartao' && !inteiros.has(f.name) && f.name !== 'telefone' && f.name !== 'email' && 'campo-meia',
+          f.type === 'select' && 'campo-select',
+          variant === 'barra' && f.name === 'nome' && 'c-nome',
+          variant === 'barra' && f.name === 'telefone' && 'c-tel',
+          variant === 'barra' && f.name === 'email' && 'c-email',
+          variant === 'barra' && f.name === 'data_evento' && 'c-data',
+          variant === 'barra' && f.name === 'convidados' && 'c-conv',
+        ];
+        const ph = placeholders[f.name] ?? f.placeholder;
+        return (
+          <div class:list={classes} data-show-when={f.showWhen} hidden={f.showWhen ? true : undefined}>
+            <label for={id(f.name)}>
+              {f.label}
+              {f.hint && <span class="opcional"> ({f.hint})</span>}
+            </label>
+            {f.type === 'select' ? (
+              <select id={id(f.name)} name={f.name} required={f.required}>
+                {(f.name === 'tipo_evento' ? tipoOptions : f.options!).map((o) => (
+                  <option value={o.value} disabled={o.disabled} selected={o.selected}>{o.label}</option>
+                ))}
+              </select>
+            ) : f.type === 'textarea' ? (
+              <textarea id={id(f.name)} name={f.name} rows="3" required={f.required} placeholder={ph}></textarea>
+            ) : (
+              <input
+                type={f.type}
+                id={id(f.name)}
+                name={f.name}
+                required={f.required}
+                placeholder={ph}
+                autocomplete={autocomplete[f.name] ?? 'off'}
+                inputmode={inputmode[f.name]}
+                min={f.type === 'number' ? '1' : undefined}
+                step={f.type === 'number' ? '1' : undefined}
+                data-datepicker={f.datepicker ? '' : undefined}
+              />
+            )}
+          </div>
+        );
+      })}
+      <button type="submit" class="btn btn-primario form-submit">{buttonLabel}</button>
+    </div>
+
+    <!-- honeypot anti-spam (invisível para pessoas) -->
+    <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+    <p class="form-error" role="alert" id={`${fid}-FormMsg`}></p>
+  </form>
+</div>
+
+<div class="form-success" id={`${fid}-success`} role="status" aria-live="polite">
+  <svg viewBox="0 0 70 42" class="onda" aria-hidden="true"><use href="#onda"></use></svg>
+  <h3>Recebemos seu pedido!</h3>
+  <p class="texto">Em breve nosso time entrará em contato com você.</p>
+</div>

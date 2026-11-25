@@ -35,6 +35,12 @@ interface Props {
   whatsAppShowEmpresaField?: boolean;
   /** Oculta o widget de WhatsApp (ex.: home de triagem, que só roteia) */
   hideWhatsApp?: boolean;
+  /** Favicon (PNG/WebP). Padrão: /images/icone.png */
+  favicon?: string;
+  /** Favicon SVG opcional (navegadores atuais; o `favicon` fica de reserva) */
+  faviconSvg?: string;
+  /** Ícone do iOS. Padrão: o mesmo `favicon` */
+  appleTouchIcon?: string;
 }
 
 const {
@@ -49,7 +55,12 @@ const {
   whatsAppMessage,
   whatsAppShowEmpresaField = false,
   hideWhatsApp = false,
+  favicon = '/images/icone.png',
+  faviconSvg,
+  appleTouchIcon,
 } = Astro.props;
+
+const iconType = (u: string) => (u.endsWith('.webp') ? 'image/webp' : u.endsWith('.svg') ? 'image/svg+xml' : 'image/png');
 
 import config from '../../config.json';
 const gtmId = config.tracking?.gtm_id || '';
@@ -92,9 +103,9 @@ const defaultJsonLd = {
     <meta property="og:locale" content="pt_BR" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/images/icone.png" />
-    <link rel="shortcut icon" href="/images/icone.png" />
-    <link rel="apple-touch-icon" href="/images/icone.png" />
+    <link rel="icon" type={iconType(favicon)} href={favicon} />
+    {faviconSvg && <link rel="icon" type="image/svg+xml" sizes="any" href={faviconSvg} />}
+    <link rel="apple-touch-icon" href={appleTouchIcon || favicon} />
 
     <!-- GTM Head -->
     {trackingEnabled && gtmId && <GTMHead gtmId={gtmId} />}

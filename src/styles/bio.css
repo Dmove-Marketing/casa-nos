@@ -1,0 +1,55 @@
+/* Bio do Instagram (/bio) — CasaNós. Uma sessão só, no mesmo visual da LP de casamentos:
+   foto com névoa areia no topo, logo + título em Franie, botões e o formulário em cartão. */
+:root{--nevoa-hero:226,215,200}
+
+.bio{position:relative;isolation:isolate;min-height:100svh;display:flex;justify-content:center;background:rgb(var(--nevoa-hero));overflow:hidden}
+
+/* foto de fundo: só o topo da tela; a névoa areia a cobre de baixo para cima */
+.bio-foto{position:absolute;inset:0 0 auto 0;z-index:-1;height:clamp(420px,72svh,680px);margin:0;overflow:hidden}
+.bio-foto picture{display:contents}
+.bio-foto img{width:100%;height:100%;object-fit:cover;object-position:50% 60%}
+.bio-foto::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgb(var(--nevoa-hero)) 0,rgba(var(--nevoa-hero),.94) 22%,rgba(var(--nevoa-hero),.62) 42%,rgba(var(--nevoa-hero),.12) 66%,rgba(var(--nevoa-hero),0) 100%)}
+@media (prefers-reduced-motion:no-preference){.bio-foto img{animation:assenta 2.4s var(--ease) both}}
+@keyframes assenta{from{transform:scale(1.07)}to{transform:none}}
+
+.bio-conteudo{width:min(520px,100% - 2*var(--respiro));padding:clamp(150px,34svh,330px) 0 clamp(36px,6vw,56px);display:flex;flex-direction:column;align-items:center;text-align:center}
+@media (min-width:700px){.bio-conteudo{padding-top:clamp(240px,44svh,400px)}}
+@media (prefers-reduced-motion:no-preference){.bio-conteudo{animation:sobe 1.2s var(--ease) both}}
+@keyframes sobe{from{opacity:0;transform:translate3d(0,14px,0)}to{opacity:1;transform:none}}
+
+/* logo mostarda sobre a névoa (mesmo tratamento do hero da LP) */
+.bio-logo{display:block;width:auto;height:clamp(88px,24vw,112px);margin:0 0 18px;filter:brightness(.9) drop-shadow(0 0 1.5px rgba(var(--nevoa-hero),1)) drop-shadow(0 0 8px rgba(var(--nevoa-hero),.9))}
+.bio h1{font-size:clamp(27px,6.6vw,38px);line-height:1.14;text-wrap:balance;color:var(--cor-rubi)}
+
+/* botões: endereço (mapa) e site (em construção) */
+.bio-botoes{width:100%;display:flex;flex-direction:column;gap:12px;margin:28px 0 30px}
+.bio-btn{width:100%;min-height:54px;gap:12px;background:rgba(251,247,241,.55)}
+.bio-btn svg{flex:none;width:19px;height:19px}
+.bio-btn.indisponivel{border-color:rgba(136,36,36,.35);color:var(--cor-texto-suave);cursor:default;background:transparent}
+.bio-btn.indisponivel:hover{background:transparent;color:var(--cor-texto-suave)}
+.bio-aviso{display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:999px;background:#F6E7E4;color:var(--cor-rubi);font-size:11.5px;font-weight:500;letter-spacing:.02em}
+
+/* formulário em cartão, igual ao da LP */
+.bio .cartao{width:100%;text-align:left;margin:0;padding:clamp(22px,5vw,32px) clamp(16px,4.4vw,28px)}
+.bio .cartao-titulo{text-align:center;margin-bottom:18px}
+.bio .form{gap:11px 9px}
+.bio .form .campo{grid-column:1/-1}
+.bio .form .campo-meia,.bio .form .campo:nth-child(2),.bio .form .campo:nth-child(3){grid-column:auto}
+.bio .campo input,.bio .campo select{font-size:16px}  /* 16 px: o iPhone não dá zoom ao tocar no campo */
+.bio .campo input::placeholder{font-size:14px}
+.bio .campo textarea{font-size:16px}
+.bio .campo-select::after{bottom:20px}
+@media (max-width:359px){.bio .form .campo:nth-child(2),.bio .form .campo:nth-child(3){grid-column:1/-1}}
+
+/* rodapé (mesmo do /casamentos; aqui sempre no formato de celular quando estreito) */
+@media (max-width:640px){
+  .rodape{padding:26px 0 28px}
+  .rodape-linha{grid-template-columns:auto auto;justify-content:center;align-items:center;column-gap:18px;row-gap:8px;text-align:left}
+  .rodape-logo{grid-row:1 / 3;justify-self:end;padding-right:18px;border-right:1px solid rgba(211,150,0,.55)}
+  .rodape-logo img{height:64px}
+  .rodape-direitos{align-self:end;line-height:1.45;color:var(--cor-papel)}
+  .rodape-credito{justify-self:start;align-self:start;gap:8px}
+  .rodape .rodape-dmove img{width:56px}
+  .rodape-traco{display:none}
+  .rodape-br{display:inline}
+}

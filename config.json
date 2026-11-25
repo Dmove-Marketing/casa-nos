@@ -1,16 +1,16 @@
 {
-  "project_name": "PREENCHER — Nome do projeto",
-  "project_slug": "preencher-slug",
-  "domain": "eventos.cliente.com.br",
-  "client": "PREENCHER — Cliente",
+  "project_name": "CasaNós — Casamentos e Bio",
+  "project_slug": "casa-nos",
+  "domain": "casanos.com.br",
+  "client": "CasaNós",
   "environment": "development",
   "tracking": {
-    "gtm_id": "GTM-XXXXXXX",
+    "gtm_id": "",
     "enabled": true
   },
   "whatsapp": {
     "phone": "5511900000000",
-    "display_name": "PREENCHER — Cliente",
+    "display_name": "CasaNós",
     "avatar": "/images/whatsapp-avatar.jpg",
     "enabled": true
   },
@@ -20,17 +20,17 @@
       "preset": "social",
       "redirect_on_success": "",
       "webhooks": [
-        "https://server3n8n.dmove.com.br/webhook/preencher-slug"
+        "https://server3n8n.dmove.com.br/webhook/casa-nos"
       ]
     }
   },
   "media": {
-    "cdn_base": "https://media.dmove.com.br/clients/preencher-slug"
+    "cdn_base": "https://media.dmove.com.br/clients/casa-nos"
   },
   "deploy": {
     "user": "root",
     "server": "157.173.197.116",
-    "remote_path": "/var/www/eventos.cliente.com.br"
+    "remote_path": "/var/www/casanos.com.br"
   },
   "meta": {
     "created_at": "",

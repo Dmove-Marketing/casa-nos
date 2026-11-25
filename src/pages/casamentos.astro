@@ -1,0 +1,290 @@
+---
+import Base from '../layouts/Base.astro';
+import Sprite from '../components/Sprite.astro';
+import LeadForm from '../components/LeadForm.astro';
+import config from '../../config.json';
+import '../styles/casanos-base.css';
+import '../styles/casamentos.css';
+
+const cdn = config.media.cdn_base;
+const photos = `${cdn}/photos`;
+const fonts = `${cdn}/fonts`;
+// placeholders do design (DDD de Valinhos) sobre o padrão do preset
+const ph = { telefone: '(19) 90000-0000', email: 'seu@email.com', convidados: 'Ex.: 100' };
+
+const title = 'Casamentos em Valinhos | CasaNós';
+const description = 'Celebre seu casamento em meio à natureza, na CasaNós, em Valinhos (SP): ambientes acolhedores, gastronomia autoral do Chef Lucas Vieira e cenários que tornam cada momento especial.';
+const canonical = `https://${config.domain}/casamentos`;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'EventVenue',
+  name: 'CasaNós',
+  description,
+  url: canonical,
+  image: `${photos}/hero-1600.webp`,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Rua Dr. Antônio Bento Ferraz, 500',
+    addressLocality: 'Valinhos',
+    addressRegion: 'SP',
+    postalCode: '13278-160',
+    addressCountry: 'BR',
+  },
+};
+---
+
+<Base
+  title={title}
+  description={description}
+  canonical={canonical}
+  ogImage={`${photos}/hero-1600.webp`}
+  theme="light"
+  jsonLd={jsonLd}
+  favicon={`${photos}/favicon.webp`}
+  faviconSvg={`${photos}/favicon.svg`}
+  appleTouchIcon={`${photos}/apple-touch-icon.webp`}
+>
+  <Fragment slot="head">
+    <meta name="theme-color" content="#F4ECE1" />
+    <!-- LCP: preload que casa com o <picture> do hero (celular x computador) -->
+    <link rel="preload" as="image" type="image/webp" href={`${photos}/hero-celular.webp`} media="(max-width: 560px)" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/webp" href={`${photos}/hero-1600.webp`} imagesrcset={`${photos}/hero-1600.webp 1600w, ${photos}/hero-2560.webp 2560w`} imagesizes="(max-width: 767px) 240vw, 115vw" media="(min-width: 561px)" fetchpriority="high" />
+    <link rel="preload" href={`${fonts}/Franie-Light.woff2`} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={`${fonts}/ClarityCity-Light.woff2`} as="font" type="font/woff2" crossorigin />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </Fragment>
+
+  <Sprite />
+
+  <main>
+<!-- ===================== HERO — composição do KV + formulário (1ª dobra) ===================== -->
+<section id="topo" class="hero">
+  <figure class="hero-foto">
+    <!-- foto em alta (ampliada 2x e tratada): WebP com JPEG de reserva; no celular, um recorte do centro -->
+    <picture>
+      <source media="(max-width: 560px)" type="image/webp" srcset={`${photos}/hero-celular.webp`}>
+      <source type="image/webp" srcset={`${photos}/hero-1600.webp 1600w, ${photos}/hero-2560.webp 2560w`} sizes="(max-width: 767px) 240vw, 115vw">
+      <img src={`${photos}/hero-1600.webp`} srcset={`${photos}/hero-1600.webp 1600w, ${photos}/hero-2560.webp 2560w`} sizes="(max-width: 767px) 240vw, 115vw" alt="Cerimônia montada à beira do lago, com corredor florido e o coreto ao fundo" width="2560" height="1435" fetchpriority="high">
+    </picture>
+  </figure>
+  <div class="hero-cena">
+    <div class="hero-cabeca">
+      <div class="hero-texto">
+        <div class="hero-titulo">
+          <img class="hero-logo" src={`${photos}/logo-casanos.svg`} alt="CasaNós" width="83" height="170">
+          <span class="hero-divisor" aria-hidden="true"></span>
+          <h1 class="ajusta">Uma casa à&nbsp;altura<br class="br-d"> da<br class="br-m"> sua&nbsp;história</h1>
+        </div>
+        <p class="texto">Celebre seu&nbsp;casamento <span class="nowrap">em&nbsp;meio à&nbsp;natureza</span>, com&nbsp;ambientes acolhedores, gastronomia autoral e&nbsp;cenários que&nbsp;tornam cada&nbsp;momento&nbsp;especial.</p>
+      </div>
+    </div>
+    <div class="hero-form">
+      <div class="cartao cartao-barra">
+        <LeadForm formId="lead-form-hero" variant="barra" idPrefix="form-field-hero-" defaultTipo="Casamento" placeholders={ph} />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== AUTORIDADE ===================== -->
+<section id="autoridade" class="autoridade" aria-label="A CasaNós em números">
+  <div class="wrap">
+    <ul class="fatos aparece">
+      <li>Desde<br class="br-fato"> 1983</li>
+      <li>40&nbsp;mil&nbsp;m²<br class="br-fato"> de&nbsp;área</li>
+      <li>Até&nbsp;120<br class="br-fato"> convidados</li>
+    </ul>
+  </div>
+  <!-- celular: os mesmos números em uma faixa que corre devagar (a lista acima continua para leitores de tela) -->
+  <div class="letreiro" aria-hidden="true"><div class="letreiro-trilho"><div class="letreiro-grupo"><span>Desde 1983</span><svg viewBox="0 0 70 42" aria-hidden="true"><use href="#onda"/></svg><span>40&nbsp;mil&nbsp;m² de&nbsp;área</span><svg viewBox="0 0 70 42" aria-hidden="true"><use href="#onda"/></svg><span>Até&nbsp;120 convidados</span><svg viewBox="0 0 70 42" aria-hidden="true"><use href="#onda"/></svg></div><div class="letreiro-grupo"><span>Desde 1983</span><svg viewBox="0 0 70 42" aria-hidden="true"><use href="#onda"/></svg><span>40&nbsp;mil&nbsp;m² de&nbsp;área</span><svg viewBox="0 0 70 42" aria-hidden="true"><use href="#onda"/></svg><span>Até&nbsp;120 convidados</span><svg viewBox="0 0 70 42" aria-hidden="true"><use href="#onda"/></svg></div></div></div>
+</section>
+
+<!-- ===================== CONCEITO ===================== -->
+<section id="conceito" class="secao conceito">
+  <div class="wrap">
+    <div class="topo-secao">
+      <svg viewBox="0 0 70 42" class="onda aparece" aria-hidden="true"><use href="#onda"/></svg>
+      <h2 class="aparece">Propósito em<br class="br-p"> <span class="nowrap">receber e&nbsp;acolher</span></h2>
+    </div>
+    <div class="conceito-corpo">
+      <figure class="foto conceito-foto aparece"><img src={`${photos}/conceito.webp`} alt="Casa histórica amarela da CasaNós, com a capela ao lado e o pátio de pedra" width="1600" height="900" loading="lazy"></figure>
+      <div class="conceito-texto">
+        <p class="texto aparece so-computador" style="--d:.08s">A&nbsp;CasaNós nasceu do&nbsp;encontro entre duas histórias&nbsp;e&nbsp;do&nbsp;desejo de&nbsp;aproximar pessoas. Em&nbsp;uma&nbsp;propriedade familiar com&nbsp;raízes desde 1983, natureza, família e&nbsp;fé se&nbsp;encontram em&nbsp;um&nbsp;mesmo propósito: receber com&nbsp;carinho, celebrar o&nbsp;amor e&nbsp;criar experiências que&nbsp;permanecem na&nbsp;memória.</p>
+        <p class="texto aparece so-computador" style="--d:.14s">Mais&nbsp;do&nbsp;que&nbsp;um&nbsp;espaço para&nbsp;eventos, a&nbsp;CasaNós é&nbsp;um&nbsp;convite para&nbsp;reunir pessoas, fortalecer laços e&nbsp;celebrar as&nbsp;histórias que&nbsp;merecem ser&nbsp;vividas.</p>
+        <!-- celular: versão resumida do mesmo texto -->
+        <p class="texto aparece so-celular" style="--d:.08s">A&nbsp;CasaNós nasceu do&nbsp;encontro <span class="nowrap">entre duas&nbsp;histórias.</span><br> <span class="nowrap">Em uma propriedade familiar</span><br> <span class="nowrap">desde 1983, natureza, família</span><br> <span class="nowrap">e fé se unem</span> <span class="nowrap">em um só&nbsp;propósito:</span><br> <span class="nowrap">receber com&nbsp;carinho</span> <span class="nowrap">e celebrar o&nbsp;amor.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== GALERIA ===================== -->
+<section id="galeria" class="secao galeria">
+  <div class="wrap">
+    <div class="topo-secao">
+      <svg viewBox="0 0 70 42" class="onda aparece" aria-hidden="true"><use href="#onda"/></svg>
+      <h2 class="aparece">Descubra<br class="br-m"> os<br class="br-d"> cenários<br class="br-m"> da&nbsp;CasaNós</h2>
+    </div>
+  </div>
+  <div class="galeria-trilho" id="galeria-trilho" data-lenis-prevent-horizontal>
+    <button type="button" class="galeria-item" style="--ar:3/2;--pos:22% 50%"><img src={`${photos}/galeria-01.webp`} alt="Casa histórica da CasaNós entre árvores" width="1536" height="1024" loading="lazy"></button>
+    <button type="button" class="galeria-item" style="--ar:9/16;--pos:50% 62%"><img src={`${photos}/galeria-02.webp`} alt="Noivos dançando no corredor da cerimônia ao ar livre" width="900" height="1600" loading="lazy"></button>
+    <button type="button" class="galeria-item" style="--ar:16/9"><img src={`${photos}/galeria-05.webp`} alt="Capela da CasaNós cercada de verde" width="1600" height="900" loading="lazy"></button>
+    <button type="button" class="galeria-item" style="--ar:684/1208;--pos:50% 4%"><img src={`${photos}/galeria-11.webp`} alt="Noivos abraçados à beira do lago" width="684" height="1208" loading="lazy"></button>
+    <button type="button" class="galeria-item" style="--ar:16/9"><img src={`${photos}/galeria-07.webp`} alt="Árvores centenárias e gramado da propriedade" width="1600" height="900" loading="lazy"></button>
+    <button type="button" class="galeria-item" style="--ar:9/16"><img src={`${photos}/galeria-06.webp`} alt="Caminho entre palmeiras até o coreto do lago" width="900" height="1600" loading="lazy"></button>
+    <button type="button" class="galeria-item" style="--ar:16/9;--pos:42% 50%"><img src={`${photos}/galeria-10.webp`} alt="Alameda de palmeiras e postes de luz na propriedade, ao entardecer" width="1600" height="900" loading="lazy"></button>
+    <button type="button" class="galeria-item" style="--ar:9/16"><img src={`${photos}/galeria-04.webp`} alt="Pátio da casa amarela em um dia ensolarado" width="900" height="1600" loading="lazy"></button>
+    <button type="button" class="galeria-item" style="--ar:16/9"><img src={`${photos}/galeria-09.webp`} alt="Jardins com arbustos e a casa ao fundo" width="1600" height="900" loading="lazy"></button>
+    <button type="button" class="galeria-item" style="--ar:901/1600"><img src={`${photos}/galeria-08.webp`} alt="Lounge com fogueira no bosque" width="901" height="1600" loading="lazy"></button>
+  </div>
+  <div class="wrap galeria-controles">
+    <button type="button" class="seta" id="galeria-ant" aria-label="Fotos anteriores"><svg aria-hidden="true"><use href="#seta-esq"/></svg></button>
+    <div class="galeria-progresso" aria-hidden="true"><span id="galeria-barra"></span></div>
+    <button type="button" class="seta" id="galeria-prox" aria-label="Próximas fotos"><svg aria-hidden="true"><use href="#seta-dir"/></svg></button>
+  </div>
+</section>
+
+<!-- ===================== ESPAÇOS ===================== -->
+<section id="espacos" class="secao espacos">
+  <div class="wrap">
+    <div class="topo-secao">
+      <svg viewBox="0 0 70 42" class="onda aparece" aria-hidden="true"><use href="#onda"/></svg>
+      <h2 class="aparece">A beleza de celebrar<br> em meio à&nbsp;natureza</h2>
+    </div>
+    <!-- celular: os nomes viram pílulas; a foto e a legenda do espaço escolhido aparecem abaixo -->
+    <div class="espacos-abas" role="group" aria-label="Escolha o espaço">
+      <button type="button" aria-pressed="true" aria-controls="espaco-1">Jardim e cerimônia ao&nbsp;ar&nbsp;livre</button>
+      <button type="button" aria-pressed="false" aria-controls="espaco-2">Lago e coreto</button>
+      <button type="button" aria-pressed="false" aria-controls="espaco-3">Pergolado e capela</button>
+      <button type="button" aria-pressed="false" aria-controls="espaco-4">Área da piscina</button>
+      <button type="button" aria-pressed="false" aria-controls="espaco-5">Salão climatizado</button>
+      <button type="button" aria-pressed="false" aria-controls="espaco-6">Área externa</button>
+    </div>
+    <ul class="espacos-lista aparece" id="espacos-lista">
+      <li class="espaco ativo">
+        <figure class="foto"><img src={`${photos}/espaco-jardim.webp`} alt="Cerimônia ao ar livre no jardim, com cadeiras e corredor de flores brancas" width="1600" height="900" loading="lazy"></figure>
+        <div class="espaco-detalhe" id="espaco-1"><p class="espaco-nome" aria-hidden="true">Jardim e&nbsp;cerimônia ao&nbsp;ar&nbsp;livre</p><p class="espaco-leg">Um&nbsp;cenário natural para&nbsp;celebrar a&nbsp;união.</p></div>
+        <h3><button type="button" class="espaco-botao" aria-expanded="true" aria-controls="espaco-1"><span class="espaco-num" aria-hidden="true">01</span><span>Jardim e&nbsp;cerimônia ao&nbsp;ar&nbsp;livre</span></button></h3>
+      </li>
+      <li class="espaco">
+        <figure class="foto"><img src={`${photos}/espaco-lago-coreto.webp`} alt="Lago com coreto e cerimônia montada às margens" width="900" height="1600" loading="lazy" style="object-position:50% 44%"></figure>
+        <div class="espaco-detalhe" id="espaco-2"><p class="espaco-nome" aria-hidden="true">Lago e&nbsp;coreto</p><p class="espaco-leg">Elementos que&nbsp;acrescentam personalidade à&nbsp;celebração.</p></div>
+        <h3><button type="button" class="espaco-botao" aria-expanded="false" aria-controls="espaco-2"><span class="espaco-num" aria-hidden="true">02</span><span>Lago e&nbsp;coreto</span></button></h3>
+      </li>
+      <li class="espaco">
+        <figure class="foto"><img src={`${photos}/espaco-pergolado-capela.webp`} alt="Corredor florido sob o pergolado, com a capela ao fundo" width="900" height="1600" loading="lazy" style="object-position:50% 32%"></figure>
+        <div class="espaco-detalhe" id="espaco-3"><p class="espaco-nome" aria-hidden="true">Pergolado e&nbsp;capela</p><p class="espaco-leg">Ambiente especial para&nbsp;cerimônias intimistas.</p></div>
+        <h3><button type="button" class="espaco-botao" aria-expanded="false" aria-controls="espaco-3"><span class="espaco-num" aria-hidden="true">03</span><span>Pergolado e&nbsp;capela</span></button></h3>
+      </li>
+      <li class="espaco">
+        <figure class="foto"><img src={`${photos}/espaco-piscina.webp`} alt="Área da piscina cercada por árvores e balaustrada branca" width="1600" height="900" loading="lazy" style="object-position:42% 50%"></figure>
+        <div class="espaco-detalhe" id="espaco-4"><p class="espaco-nome" aria-hidden="true">Área da&nbsp;piscina</p><p class="espaco-leg">Área externa que&nbsp;pode receber <span class="nowrap">lounges e&nbsp;pista de&nbsp;dança</span>.</p></div>
+        <h3><button type="button" class="espaco-botao" aria-expanded="false" aria-controls="espaco-4"><span class="espaco-num" aria-hidden="true">04</span><span>Área da&nbsp;piscina</span></button></h3>
+      </li>
+      <li class="espaco">
+        <figure class="foto"><img src={`${photos}/espaco-salao.webp`} alt="Salão climatizado com mesa de buffet, flores e portas de vidro para o jardim" width="900" height="1600" loading="lazy" style="object-position:50% 52%"></figure>
+        <div class="espaco-detalhe" id="espaco-5"><p class="espaco-nome" aria-hidden="true">Salão climatizado</p><p class="espaco-leg">Espaço interno integrado às áreas externas, com&nbsp;capacidade para&nbsp;até&nbsp;100&nbsp;convidados sentados.</p></div>
+        <h3><button type="button" class="espaco-botao" aria-expanded="false" aria-controls="espaco-5"><span class="espaco-num" aria-hidden="true">05</span><span>Salão climatizado</span></button></h3>
+      </li>
+      <li class="espaco">
+        <figure class="foto"><img src={`${photos}/espaco-area-externa.webp`} alt="Área externa com mesa posta diante da casa amarela" width="1600" height="900" loading="lazy" style="object-position:50% 62%"></figure>
+        <div class="espaco-detalhe" id="espaco-6"><p class="espaco-nome" aria-hidden="true">Área externa</p><p class="espaco-leg">200&nbsp;m² para&nbsp;ampliar as&nbsp;possibilidades de&nbsp;recepção e&nbsp;convivência.</p></div>
+        <h3><button type="button" class="espaco-botao" aria-expanded="false" aria-controls="espaco-6"><span class="espaco-num" aria-hidden="true">06</span><span>Área externa</span></button></h3>
+      </li>
+    </ul>
+    <div class="espacos-progresso" aria-hidden="true"><span id="espacos-barra"></span></div>
+  </div>
+</section>
+
+<!-- ===================== GASTRONOMIA ===================== -->
+<section id="gastronomia" class="secao gastronomia">
+  <div class="wrap">
+    <div class="topo-secao">
+      <svg viewBox="0 0 70 42" class="onda aparece" aria-hidden="true"><use href="#onda"/></svg>
+      <h2 class="aparece">Gastronomia<br class="br-m"> que também<br class="br-d"> faz<br class="br-m"> parte da&nbsp;história</h2>
+      <p class="texto aparece linhas-cel" style="--d:.08s"><span class="l">Sob a&nbsp;assinatura do <span class="nome">Chef&nbsp;Lucas&nbsp;Vieira</span>,</span> <span class="l">a&nbsp;cozinha é&nbsp;autoral e&nbsp;afetiva, com</span> <span class="l">influências portuguesas e&nbsp;espanholas.</span> <span class="l">O&nbsp;cardápio é&nbsp;construído em</span> <span class="l">conjunto com&nbsp;os&nbsp;anfitriões.</span></p>
+    </div>
+    <div class="gastro-painel" id="gastro-painel">
+      <button type="button" class="gastro-item aparece ativo" style="--d:0.00s" aria-label="Ampliar foto: Paella de carnes grelhadas servida na panela"><img src={`${photos}/gastronomia-01.webp`} alt="Paella de carnes grelhadas servida na panela" width="1600" height="900" loading="lazy"><span class="gastro-zoom" aria-hidden="true"><svg><use href="#ampliar"/></svg></span></button>
+      <button type="button" class="gastro-item aparece" style="--d:0.06s" aria-label="Ampliar foto: Mesa de charcutaria com queijos, frutas e flores"><img src={`${photos}/gastronomia-02.webp`} alt="Mesa de charcutaria com queijos, frutas e flores" width="900" height="1600" loading="lazy" style="object-position:50% 58%"><span class="gastro-zoom" aria-hidden="true"><svg><use href="#ampliar"/></svg></span></button>
+      <button type="button" class="gastro-item aparece" style="--d:0.12s" aria-label="Ampliar foto: Aperitivos dourados servidos em tábuas e pratos"><img src={`${photos}/gastronomia-03.webp`} alt="Aperitivos dourados servidos em tábuas e pratos" width="1600" height="900" loading="lazy"><span class="gastro-zoom" aria-hidden="true"><svg><use href="#ampliar"/></svg></span></button>
+      <button type="button" class="gastro-item aparece" style="--d:0.18s" aria-label="Ampliar foto: Paella de frutos do mar colorida"><img src={`${photos}/gastronomia-04.webp`} alt="Paella de frutos do mar colorida" width="1600" height="900" loading="lazy"><span class="gastro-zoom" aria-hidden="true"><svg><use href="#ampliar"/></svg></span></button>
+      <button type="button" class="gastro-item aparece" style="--d:0.24s" aria-label="Ampliar foto: Mesa farta de queijos e aperitivos"><img src={`${photos}/gastronomia-05.webp`} alt="Mesa farta de queijos e aperitivos" width="1600" height="900" loading="lazy"><span class="gastro-zoom" aria-hidden="true"><svg><use href="#ampliar"/></svg></span></button>
+    </div>
+    <div class="gastro-progresso" aria-hidden="true"><span id="gastro-barra"></span></div>
+    <!-- celular: miniaturas para escolher a foto (cada seção da LP passa as fotos de um jeito) -->
+    <div class="gastro-miniaturas" role="group" aria-label="Escolher foto da gastronomia">
+      <button type="button" aria-pressed="true" aria-label="Mostrar foto: Paella de carnes grelhadas servida na panela"><img src={`${photos}/gastronomia-01.webp`} alt="" width="160" height="160" loading="lazy"></button>
+      <button type="button" aria-pressed="false" aria-label="Mostrar foto: Mesa de charcutaria com queijos, frutas e flores"><img src={`${photos}/gastronomia-02.webp`} alt="" width="160" height="160" loading="lazy"></button>
+      <button type="button" aria-pressed="false" aria-label="Mostrar foto: Aperitivos dourados servidos em tábuas e pratos"><img src={`${photos}/gastronomia-03.webp`} alt="" width="160" height="160" loading="lazy"></button>
+      <button type="button" aria-pressed="false" aria-label="Mostrar foto: Paella de frutos do mar colorida"><img src={`${photos}/gastronomia-04.webp`} alt="" width="160" height="160" loading="lazy"></button>
+      <button type="button" aria-pressed="false" aria-label="Mostrar foto: Mesa farta de queijos e aperitivos"><img src={`${photos}/gastronomia-05.webp`} alt="" width="160" height="160" loading="lazy"></button>
+    </div>
+    <div class="gastro-controles">
+      <button type="button" class="seta" id="gastro-ant" aria-label="Foto anterior da gastronomia"><svg aria-hidden="true"><use href="#seta-esq"/></svg></button>
+      <button type="button" class="seta" id="gastro-prox" aria-label="Próxima foto da gastronomia"><svg aria-hidden="true"><use href="#seta-dir"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== HOSPEDAGEM ===================== -->
+<section id="hospedagem" class="secao hospedagem">
+  <div class="wrap">
+    <div class="hosp-corpo">
+      <div class="hosp-texto">
+        <svg viewBox="0 0 70 42" class="onda aparece" aria-hidden="true"><use href="#onda"/></svg>
+        <h2 class="aparece">Cuidado<br class="br-m"> que vai além<br> da&nbsp;celebração</h2>
+        <p class="texto aparece" style="--d:.08s"><span class="hosp-frase"><span class="nowrap">A&nbsp;CasaNós conta com uma&nbsp;parceria</span> <span class="nowrap">com&nbsp;o <span class="nome">Valinhos Plaza Hotel.</span></span></span> <span class="hosp-frase"><span class="nowrap">O&nbsp;hotel oferece opções de&nbsp;hospedagem</span> <span class="nowrap">em&nbsp;<span class="nome">apartamentos e&nbsp;bangalôs,</span></span></span> <span class="hosp-frase"><span class="nowrap">além de&nbsp;estrutura de&nbsp;lazer para&nbsp;tornar</span> <span class="nowrap">a&nbsp;estadia <span class="nome">ainda mais agradável.</span></span></span></p>
+      </div>
+      <figure class="foto hosp-foto aparece" style="--d:.1s"><img src={`${photos}/hotel.webp`} alt="Apartamento do Valinhos Plaza Hotel, com cama de casal, criados-mudos e ar-condicionado" width="1600" height="896" loading="lazy"></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTATO ===================== -->
+<section id="contato" class="secao contato">
+  <div class="wrap contato-corpo">
+    <div class="contato-texto">
+      <svg viewBox="0 0 70 42" class="onda aparece" aria-hidden="true"><use href="#onda"/></svg>
+      <h2 class="aparece">Sua história<br> merece começar<br> <span class="nowrap">em um lugar especial</span></h2>
+      <p class="texto aparece" style="--d:.08s">Preencha o&nbsp;formulário e, em&nbsp;breve, nosso time entrará em&nbsp;contato com&nbsp;você.</p>
+      <address class="contato-endereco aparece" style="--d:.14s"><a href="https://www.google.com/maps/search/?api=1&amp;query=Rua%20Dr.%20Ant%C3%B4nio%20Bento%20Ferraz%2C%20500%2C%20Valinhos%20-%20SP%2C%2013278-160" target="_blank" rel="noopener" aria-label="Ver o endereço no Google Maps: Rua Dr. Antônio Bento Ferraz, 500, Bairro Dois Córregos, Valinhos – SP, CEP 13278-160"><svg aria-hidden="true"><use href="#pino"/></svg><span class="end-curto">Rua Dr.&nbsp;Antônio Bento Ferraz, 500 –&nbsp;Valinhos/SP</span><span class="end-texto"><span class="nowrap">Rua Dr.&nbsp;Antônio Bento Ferraz, 500</span><span class="end-sep1"> ·</span><br class="end-br1"> <span class="nowrap">Bairro Dois Córregos,</span> <span class="nowrap">Valinhos&nbsp;–&nbsp;SP</span><span class="end-sep2"> ·</span><br class="end-br2"> <span class="nowrap">CEP&nbsp;13278-160</span></span></a></address>
+    </div>
+    <div class="cartao aparece" style="--d:.1s">
+      <LeadForm formId="lead-form-contato" variant="cartao" defaultTipo="Casamento" placeholders={ph} class="form-contato" />
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== RODAPÉ ===================== -->
+<footer class="rodape">
+  <div class="wrap rodape-linha">
+    <a class="rodape-logo" href="#topo" aria-label="CasaNós — voltar ao início"><img src={`${photos}/logo-casanos.svg`} alt="CasaNós" width="83" height="170" loading="lazy"></a>
+    <p class="rodape-direitos">Copyright © 2026 CasaNós<span class="rodape-traco"> -</span><br class="rodape-br"> Todos os&nbsp;direitos reservados</p>
+    <p class="rodape-credito">Desenvolvido por <a class="rodape-dmove" href="https://dmove.com.br" target="_blank" rel="noopener"><img src={`${photos}/logo-dmove.webp`} alt="Dmove" width="600" height="134" loading="lazy"></a></p>
+  </div>
+</footer>
+
+<!-- lightbox da galeria -->
+<dialog class="lightbox" id="lightbox" aria-label="Galeria de fotos">
+  <div class="lightbox-corpo" data-lenis-prevent>
+    <img src="" alt="">
+    <button type="button" class="lb-btn lb-fechar" aria-label="Fechar galeria"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4 4 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button>
+    <button type="button" class="lb-btn lb-ant" aria-label="Foto anterior"><svg aria-hidden="true"><use href="#seta-esq"/></svg></button>
+    <button type="button" class="lb-btn lb-prox" aria-label="Próxima foto"><svg aria-hidden="true"><use href="#seta-dir"/></svg></button>
+    <p class="lb-contador" aria-live="polite"></p>
+  </div>
+</dialog>
+
+  <script>
+    import { initForms } from '../scripts/forms';
+    import { initDateFields } from '../scripts/date-field';
+    import '../scripts/casamentos.js';
+
+    initDateFields();
+    initForms();
+  </script>
+</Base>

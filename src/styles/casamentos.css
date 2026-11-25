@@ -1,0 +1,419 @@
+/* LP /casamentos — CasaNós (design Claude Design, v4) */
+/* ===================== HERO ===================== */
+/* Foto inteira, de ponta a ponta. Escurecimento suave embaixo (atrás do texto em creme)
+   e leve no topo (atrás do logo). Selos, título e subtítulo na base da foto e, abaixo
+   deles, o cartão "Solicite orçamento" em uma linha, ainda dentro da foto (primeira dobra).
+   Abaixo de 1200px: foto com o texto e o cartão logo depois, subindo um pouco sobre a foto. */
+.hero{position:relative;isolation:isolate;min-height:max(680px,100svh);display:flex}
+.hero-foto{position:absolute;inset:0;z-index:-1;margin:0;overflow:hidden}
+.hero-foto picture{display:contents}
+.hero-foto img{width:100%;height:100%;object-fit:cover;object-position:50% 100%;transform:scale(var(--foto-zoom));transform-origin:50% 100%} /* ampliada a partir da base: o altar sobe */
+.js .hero-foto img{animation:assenta 2.6s var(--ease) both}
+@keyframes assenta{from{transform:scale(calc(var(--foto-zoom) + .06))}to{transform:scale(var(--foto-zoom))}}
+/* névoa areia (creme ~10% mais escuro) na base, atrás do logo, do título rubi e do subtítulo cinza */
+:root{--nevoa-hero:226,215,200} /* névoa areia do hero */
+.hero{--foto-zoom:1.16}
+.hero-foto::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(var(--nevoa-hero),.96) 0,rgba(var(--nevoa-hero),.93) calc(250px + 6vh),rgba(var(--nevoa-hero),.86) calc(340px + 7vh),rgba(var(--nevoa-hero),.45) calc(390px + 7vh),rgba(var(--nevoa-hero),0) calc(445px + 7vh))}
+.hero-cena{width:min(1360px,100% - 2*var(--respiro));margin-inline:auto;display:flex;flex-direction:column;gap:clamp(28px,3vw,40px);padding:clamp(24px,2.4vw,36px) 0}
+.hero-cabeca{flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding-top:48px}
+.hero-logo{display:block;flex:none;height:calc(var(--titulo-fs) * 1.95);width:auto;margin:0;filter:brightness(.9) drop-shadow(0 0 1.5px rgba(var(--nevoa-hero),1)) drop-shadow(0 0 8px rgba(var(--nevoa-hero),.9))}
+
+.hero-texto{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px clamp(32px,4vw,64px)}
+/* logo | título, lado a lado; o logo tem a altura das duas linhas do título */
+.hero-titulo{--titulo-fs:clamp(34px,4.4vw - 6px,66px);flex:1 1 520px;min-width:0;position:relative;display:flex;align-items:center;gap:clamp(16px,1.6vw,26px)}
+.hero-divisor{flex:none;align-self:stretch;width:1px;margin-block:4px;background:rgba(136,36,36,.45)}
+/* um pouco da mesma névoa, só em volta do logo (o mostarda some sobre o lago dourado) */
+.hero-titulo::before{content:"";position:absolute;z-index:-1;left:-170px;top:-80px;width:420px;height:calc(100% + 160px);background:radial-gradient(closest-side,rgba(var(--cor-nevoa-rgb),.75),rgba(var(--cor-nevoa-rgb),.4) 55%,rgba(var(--cor-nevoa-rgb),0));pointer-events:none}
+.hero h1{font-size:var(--titulo-fs);line-height:1.05;color:var(--cor-rubi)}
+.hero-texto .texto{flex:0 1 430px;min-width:0;margin:0;max-width:40ch;font-size:clamp(16px,.3vw + 14.7px,20px);font-weight:400;line-height:1.26;color:var(--cor-texto)}
+.js .hero-texto{animation:sobe 1.3s var(--ease) both}
+.js .hero-texto{animation-delay:.1s}
+@keyframes sobe{from{opacity:0;transform:translate3d(0,14px,0)}to{opacity:1;transform:none}}
+
+/* cartão do formulário */
+.hero-form{position:relative;z-index:1}
+.js .hero-form{animation:sobe 1.3s .25s var(--ease) both}
+/* cartão do hero: tipo de evento em pílulas + campos em uma linha */
+.cartao-barra{background:#fff;border:1px solid var(--cor-borda);border-radius:clamp(18px,1.7vw,24px);padding:clamp(20px,2vw,28px);box-shadow:0 30px 60px -30px rgba(40,20,10,.35)}
+.form.form-barra{display:block}
+.cartao-barra-topo{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 24px;margin-bottom:20px}
+.cartao-barra .cartao-titulo{margin:0;font-size:clamp(24px,.4vw + 22px,28px);line-height:1.15}
+.tipos{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.tipos-rotulo{margin-right:4px;font-size:12.5px;font-weight:500;color:var(--cor-texto)}
+.pilula{position:relative;display:inline-flex;cursor:pointer}
+.pilula input{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+.pilula span{display:inline-flex;align-items:center;height:44px;padding:0 18px;border:1px solid var(--cor-borda);border-radius:999px;background:#fff;color:var(--cor-texto);font-size:14px;line-height:1;white-space:nowrap;transition:background .2s,color .2s,border-color .2s}
+.pilula:hover span{border-color:#CBBBA3}
+.pilula input:checked + span{background:#F6E7E4;border-color:var(--cor-rubi);color:var(--cor-rubi);font-weight:500}
+.pilula input:focus-visible + span{outline:2px solid var(--cor-rubi);outline-offset:2px}
+.campos-barra{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px}
+.campos-barra .campo{flex:1 1 150px}
+.campos-barra .c-tel{flex-basis:156px}
+.campos-barra .c-data{flex-basis:136px}
+.campos-barra .c-email{flex-basis:180px}
+.form-barra .campo input{height:48px;padding:0 14px;border-color:#E8DDCC;border-radius:12px;background:#F7F2EA}
+.form-barra .campo input:focus{background:#fff}
+.campos-barra .btn{flex:1 1 190px;min-height:48px;border-radius:999px}
+
+/* ===================== AUTORIDADE ===================== */
+/* faixa rubi: quebra o creme entre o hero e o conceito e dá peso aos números */
+.autoridade{padding:clamp(52px,5.2vw,80px) 0;background:var(--cor-rubi)}
+/* sempre em uma linha: em telas menores, a fonte e os espaços diminuem para caber */
+.fatos{--g:clamp(14px,3.2vw,64px);list-style:none;margin:0;padding:0;display:flex;justify-content:center;align-items:baseline;flex-wrap:nowrap;gap:var(--g);font-family:var(--fonte-titulo);font-weight:300;color:var(--cor-papel);font-size:min(clamp(24px,1.4vw + 14px,36px),(min(var(--largura),100vw - 2*var(--respiro)) - 4*var(--g) - 16px) / 27.6);line-height:1.2;text-align:center}
+.fatos li{white-space:nowrap}
+.fatos li + li::before{content:"";display:inline-block;width:6px;height:6px;margin-right:var(--g);border-radius:50%;background:var(--cor-mostarda);vertical-align:middle;transform:translateY(-.15em)}
+.br-fato{display:none}
+.letreiro{display:none}
+@keyframes corre{to{transform:translateX(-50%)}}
+
+/* ===================== CONCEITO ===================== */
+/* conceito: menos espaço depois da faixa de autoridade; título em uma linha; uma foto ao lado do texto */
+.secao.conceito{padding:clamp(56px,6vw,96px) 0 clamp(72px,8vw,128px)}
+.conceito .topo-secao{max-width:none;margin-bottom:clamp(32px,3.6vw,52px)}
+.conceito h2{white-space:nowrap;font-size:min(clamp(30px,2.3vw + 14px,50px),calc((100vw - 2*var(--respiro))/18.7))}
+.conceito-corpo{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(32px,5vw,80px);align-items:center}
+.conceito-foto{aspect-ratio:4/3}
+.conceito-foto img{object-position:42% 55%}
+/* um texto só, no mesmo estilo: dois parágrafos em cinza, sem a frase em rubi separada */
+.conceito-texto .texto{margin:0;max-width:42ch}   /* mesmo tamanho e entrelinha dos outros textos */
+.conceito-texto .texto + .texto{margin-top:1em}
+.br-p{display:none}
+.so-celular{display:none}
+
+/* ===================== ESPAÇOS ===================== */
+.gastronomia{background:var(--cor-papel)}
+/* espaços (computador): lista dos 6 espaços à esquerda e uma foto grande à direita, que troca
+   ao passar o mouse ou clicar no nome; só o espaço ativo mostra a legenda */
+.secao.espacos{padding:clamp(72px,8vw,128px) 0}
+.espacos .topo-secao{margin-bottom:clamp(36px,4vw,56px)}
+/* espaços (computador): foto grande à esquerda; à direita, o nome e a legenda do espaço ativo
+   e, embaixo, a lista dos 6 espaços para navegar (passar o mouse, clicar ou teclado) */
+.espacos-lista{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);grid-template-rows:auto clamp(24px,2.4vw,36px) repeat(6,auto);align-content:start;column-gap:clamp(40px,5vw,88px)}
+.espaco{display:contents}
+.espaco .foto{grid-column:1;grid-row:1 / -1;min-height:clamp(380px,30vw,460px);opacity:0;transition:opacity .7s var(--ease)}
+.espaco .foto img{position:absolute;inset:0;transform:scale(1.03);transition:transform 1.6s var(--ease)}
+.espaco.ativo .foto{opacity:1}
+.espaco.ativo .foto img{transform:none}
+.espaco-detalhe{grid-column:2;grid-row:1;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .4s var(--ease),transform .4s var(--ease),visibility 0s .4s}
+.espaco.ativo .espaco-detalhe{opacity:1;visibility:visible;transform:none;transition:opacity .45s var(--ease) .1s,transform .45s var(--ease) .1s,visibility 0s}
+.espaco-nome{margin:0;font-family:var(--fonte-titulo);font-weight:300;font-size:clamp(24px,.6vw + 17px,28px);line-height:1.18;color:var(--cor-rubi)}
+.espaco-leg{margin:12px 0 0;max-width:36ch;font-size:clamp(16px,.2vw + 14px,17px);line-height:1.45;color:var(--cor-texto)}
+.espaco h3{grid-column:2;margin:0;border-top:1px solid var(--cor-linha);font-size:inherit}
+.espaco:nth-child(1) h3{grid-row:3}.espaco:nth-child(2) h3{grid-row:4}.espaco:nth-child(3) h3{grid-row:5}
+.espaco:nth-child(4) h3{grid-row:6}.espaco:nth-child(5) h3{grid-row:7}.espaco:nth-child(6) h3{grid-row:8;border-bottom:1px solid var(--cor-linha)}
+.espaco-botao{display:flex;align-items:center;gap:14px;width:100%;min-height:48px;padding:0;border:0;background:none;text-align:left;font-family:var(--fonte-texto);font-size:16px;font-weight:400;line-height:1.3;color:var(--cor-texto-suave);cursor:pointer;transition:color .3s}
+.espaco-num{flex:none;width:2ch;font-size:12px;font-weight:500;letter-spacing:.06em;color:var(--cor-mostarda)}
+.espaco-botao:hover,.espaco.ativo .espaco-botao{color:var(--cor-rubi)}
+.espaco.ativo .espaco-botao{font-weight:500}
+.espacos-progresso{display:none}
+.espacos-abas{display:none}
+@keyframes surge{from{opacity:0}to{opacity:1}}
+
+/* ===================== GASTRONOMIA ===================== */
+/* gastronomia: 5 painéis lado a lado; o painel ativo se abre e os outros viram faixas.
+   passar o mouse (ou o foco do teclado) abre o painel; clicar amplia a foto no lightbox */
+.gastro-painel{display:flex;gap:clamp(8px,.9vw,14px);height:clamp(380px,36vw,540px);margin-top:clamp(8px,1vw,16px)}
+.gastro-item{position:relative;display:block;flex:1 1 0;min-width:0;height:100%;padding:0;border:0;overflow:hidden;background:#E7DCCB;cursor:zoom-in}
+.gastro-item,.js .gastro-item.aparece{transition:opacity 1.1s var(--ease) var(--d,0s),transform 1.1s var(--ease) var(--d,0s),flex-grow .8s var(--ease)}
+.gastro-item.ativo{flex-grow:4.2}
+.gastro-item img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.9) brightness(.94);transition:filter .8s var(--ease),transform 1.2s var(--ease)}
+.gastro-item.ativo img{filter:none}
+.gastro-item.ativo:hover img{transform:scale(1.03)}
+.gastro-item:focus-visible{outline:2px solid var(--cor-rubi);outline-offset:3px}
+.gastro-zoom{position:absolute;right:16px;bottom:16px;width:44px;height:44px;border-radius:50%;background:var(--cor-papel);color:var(--cor-rubi);display:grid;place-items:center;opacity:0;transform:scale(.85);transition:opacity .4s var(--ease),transform .4s var(--ease)}
+.gastro-zoom svg{width:18px;height:18px}
+.gastro-item.ativo .gastro-zoom{opacity:1;transform:none;transition-delay:.35s}
+.gastro-progresso{display:none}
+.gastro-controles{display:none}
+.gastro-miniaturas{display:none}
+.galeria-progresso span,.espacos-progresso span,.gastro-progresso span{position:absolute;inset:0;background:var(--cor-rubi);transform:scaleX(var(--p,.12));transform-origin:left;transition:transform .2s linear}
+
+/* hospedagem: texto à esquerda, foto do hotel à direita */
+.secao.hospedagem{padding:clamp(72px,8vw,128px) 0}
+.hosp-corpo{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:clamp(40px,5vw,88px);align-items:center}
+.hosp-texto .onda{margin:0 0 22px}
+.hosp-texto h2{margin:0;font-size:clamp(30px,2.3vw + 14px,48px)}
+.hosp-texto .texto{margin:18px 0 0;max-width:44ch}
+.hosp-foto{aspect-ratio:3/2}
+/* o parágrafo fica em 3 linhas fixas: "...Valinhos Plaza Hotel." / "...apartamentos e bangalôs," /
+   "além de... ainda mais agradável." Se a coluna estreitar, a fonte diminui um pouco para caber;
+   com a coluna abaixo de 540 px (celular), cada frase vira duas linhas, em 6 linhas no total */
+.hosp-texto{container-type:inline-size}
+.nome{white-space:nowrap}
+/* coluna estreita (celular): o texto quebra naturalmente, mas nomes e expressões ficam sempre inteiros */
+/* celular: cada metade de frase começa numa linha nova; se não couber, quebra dentro dela,
+   mas nomes e expressões (.nome) ficam sempre inteiros e nada sai da tela */
+@container (max-width:539px){
+  .hosp-texto .texto .nowrap{display:block;white-space:nowrap}
+  .hosp-texto .texto.quebra-livre .nowrap{white-space:normal;text-wrap:balance}
+  .hosp-texto .texto .nome{white-space:nowrap}
+}
+@container (min-width:540px){
+  .hosp-texto .texto{max-width:none;font-size:min(clamp(16px,.3vw + 15px,18.5px),100cqi / 33.6)}
+  .hosp-frase{white-space:nowrap}
+}
+@media (min-width:1101px) and (max-width:1279px){.hosp-corpo{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}}
+.contato{background:var(--cor-papel)}
+.contato .cartao{background:#fff}
+
+/* ===================== GALERIA ===================== */
+.galeria{background:var(--cor-papel);--alto:clamp(300px,30vw,460px)}
+.galeria-trilho{display:flex;gap:16px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:none;padding-inline:max(var(--respiro),(100vw - var(--largura))/2);scroll-padding-inline:max(var(--respiro),(100vw - var(--largura))/2);cursor:grab}
+.galeria-trilho::-webkit-scrollbar{display:none}
+.galeria-trilho.arrastando{cursor:grabbing;scroll-snap-type:none}
+.galeria-trilho.arrastando .galeria-item{pointer-events:none}
+.galeria-item{flex:0 0 auto;height:var(--alto);aspect-ratio:var(--ar);border:0;padding:0;overflow:hidden;cursor:zoom-in;scroll-snap-align:start;background:#E7DCCB}
+.galeria-item img{width:100%;height:100%;object-fit:cover;object-position:var(--pos,50% 50%);transition:transform 1.2s var(--ease)}
+.galeria-item:hover img{transform:scale(1.03)}
+.galeria-controles{display:flex;align-items:center;justify-content:center;gap:20px;margin-top:40px}
+.seta{width:52px;height:52px;border:1px solid var(--cor-rubi);border-radius:50%;background:transparent;color:var(--cor-rubi);display:grid;place-items:center;cursor:pointer;transition:background .25s,color .25s,opacity .25s}
+.seta svg{width:18px;height:18px}
+.seta:hover{background:var(--cor-rubi);color:#fff}
+.seta:disabled{opacity:.3;cursor:default;background:transparent;color:var(--cor-rubi)}
+.galeria-progresso{width:min(320px,50vw);height:1px;background:var(--cor-linha);position:relative;overflow:hidden}
+
+/* lightbox */
+.lightbox{border:0;padding:0;margin:auto;width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;background:transparent}
+.lightbox::backdrop{background:rgba(30,18,16,.94)}
+.lightbox-corpo{position:relative;width:100%;height:100%;display:grid;place-items:center;padding:72px 84px}
+.lightbox-corpo img{max-width:calc(100vw - 168px);max-height:calc(100vh - 144px);max-height:calc(100dvh - 144px);width:auto;height:auto;object-fit:contain}
+.lb-btn{position:absolute;width:50px;height:50px;border:1px solid rgba(251,247,241,.35);border-radius:50%;background:transparent;color:var(--cor-papel);display:grid;place-items:center;cursor:pointer;transition:background .2s}
+.lb-btn:hover{background:rgba(251,247,241,.12)}
+.lb-btn svg{width:18px;height:18px}
+.lb-fechar{top:20px;right:20px}
+.lb-ant{left:20px;top:50%;transform:translateY(-50%)}
+.lb-prox{right:20px;top:50%;transform:translateY(-50%)}
+.lb-contador{position:absolute;bottom:24px;left:0;right:0;pointer-events:none;text-align:center;font-size:13px;color:rgba(251,247,241,.7)}
+
+/* ===================== CONTATO ===================== */
+/* título, texto e endereço (link para o mapa) à esquerda; formulário à direita, centralizados na vertical */
+.contato-corpo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(40px,6vw,104px);align-items:center}
+.contato-texto{container-type:inline-size}
+/* telas largas: a coluna de texto cresce um pouco para o endereço caber em uma linha */
+@media (min-width:1340px){.contato-corpo{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}}
+.contato-texto .onda{margin:0 0 26px}
+.contato-texto h2{font-size:min(clamp(30px,2.3vw + 14px,50px),100cqi / 12.8)}
+.contato-texto .texto{margin:20px 0 0;max-width:40ch}
+/* endereço: sem sublinhado, fonte menor, pino centralizado com o texto.
+   Uma linha só quando cabe com pelo menos 13,5 px; senão 2 linhas (rua / bairro, cidade e CEP)
+   e, em coluna bem estreita, 3 linhas (o CEP desce) */
+.contato-endereco{margin-top:24px;font-style:normal}
+.contato-endereco a{display:inline-flex;align-items:center;gap:10px;font-size:14px;line-height:1.5;color:var(--cor-texto-suave);text-decoration:none;transition:color .25s}
+.contato-endereco a:hover{color:var(--cor-rubi)}
+.contato-endereco svg{flex:none;width:18px;height:18px;color:var(--cor-rubi)}
+.end-sep1,.end-br2,.end-curto{display:none}
+@container (min-width:600px){
+  .contato-endereco a{font-size:min(14px,(100cqi - 28px) / 42.4)}
+  .end-texto{white-space:nowrap}
+  .end-sep1{display:inline}
+  .end-br1{display:none}
+}
+@container (max-width:379px){.end-sep2{display:none}.end-br2{display:inline}}
+.contato .cartao{margin:0;padding:clamp(24px,3.4vw,44px)}
+/* coluna estreita: o CEP desce para a terceira linha, sem o ponto separador */
+@media (max-width:900px){
+  .contato-corpo{grid-template-columns:minmax(0,1fr);gap:clamp(40px,6vw,64px)}
+  .contato-texto{text-align:center}
+  .contato-texto .onda{margin:0 auto 26px}
+  .contato-texto .texto{margin-inline:auto;max-width:60ch}
+  .contato-endereco a{text-align:left}
+  .contato .cartao{width:100%;max-width:760px;margin:0 auto}
+}
+
+/* ===================== RESPONSIVO ===================== */
+@media (max-width:1100px){
+  /* hospedagem: texto centralizado em cima, foto embaixo (o título não cabe em duas linhas na coluna) */
+  .hosp-corpo{grid-template-columns:minmax(0,1fr);gap:32px}
+  .hosp-texto{text-align:center}
+  .hosp-texto .onda{margin:0 auto 22px}
+  .hosp-texto .texto{margin-inline:auto}
+}
+@media (max-width:560px){
+  .conceito h2{font-size:calc(min(28px,(100vw - 2*var(--respiro)) / 13.3) * var(--esc-titulos,1))}
+  .br-p{display:inline}
+}
+@media (max-width:1199px){
+  /* notebook pequeno e tablet: o mesmo padrão do computador (foto inteira atrás, título e subtítulo
+     lado a lado, cartão dentro da foto), com textos e formas menores */
+  .hero-cena{gap:clamp(22px,2.6vw,32px)}
+  .hero-titulo{--titulo-fs:clamp(30px,4.4vw - 6px,46px);flex:0 1 auto;gap:clamp(12px,1.4vw,16px)}
+  .hero-texto{gap:18px clamp(24px,3.4vw,40px)}
+  .hero-texto .texto{flex:0 1 360px;min-width:240px;font-size:clamp(15px,.4vw + 12.4px,17px)}
+  .cartao-barra{padding:20px;border-radius:18px}
+  .cartao-barra-topo{gap:12px 20px;margin-bottom:16px}
+  .cartao-barra .cartao-titulo{font-size:22px}
+  .tipos{gap:6px}
+  .tipos-rotulo{font-size:12px}
+  .pilula span{height:38px;padding:0 12px;font-size:13px}
+  .campos-barra{display:grid;grid-template-columns:minmax(90px,.9fr) minmax(146px,1.1fr) minmax(120px,1.2fr) minmax(132px,1fr) minmax(130px,1fr) minmax(166px,1.15fr);gap:10px}
+  .campo{gap:5px}
+  .campo label{font-size:11.5px}
+  .form-barra .campo input{height:42px;padding:0 12px;border-radius:10px;font-size:13.5px}
+  .campos-barra .btn{grid-column:auto;width:auto;margin-top:0;min-height:42px;padding:0 16px;font-size:13.5px;white-space:nowrap}
+  /* a névoa sobe um pouco: o cartão fica mais alto quando os campos ocupam duas linhas */
+  .hero-foto::after{background:linear-gradient(0deg,rgba(var(--nevoa-hero),.96) 0,rgba(var(--nevoa-hero),.93) calc(270px + 6vh),rgba(var(--nevoa-hero),.86) calc(360px + 7vh),rgba(var(--nevoa-hero),.45) calc(410px + 7vh),rgba(var(--nevoa-hero),0) calc(465px + 7vh))}
+}
+@media (max-width:979px){
+  /* tablet: campos em 3 colunas e 2 linhas (nome, telefone, e-mail / data, convidados, botão) */
+  .campos-barra{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .campos-barra .btn{padding:0 10px}
+  .hero-texto .texto{flex-basis:280px}
+  .hero-foto::after{background:linear-gradient(0deg,rgba(var(--nevoa-hero),.96) 0,rgba(var(--nevoa-hero),.93) calc(340px + 6vh),rgba(var(--nevoa-hero),.86) calc(440px + 7vh),rgba(var(--nevoa-hero),.45) calc(495px + 7vh),rgba(var(--nevoa-hero),0) calc(560px + 7vh))}
+}
+@media (max-width:900px){
+  .conceito-corpo{grid-template-columns:minmax(0,1fr);gap:28px}
+  .conceito-texto{max-width:600px}
+  /* celular: pílulas com os nomes (rolagem lateral) e, abaixo, a foto grande e a legenda do espaço escolhido */
+  .espacos-abas{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 calc(-1*var(--respiro)) 18px;padding:0 var(--respiro);scroll-padding-inline:var(--respiro)}
+  .espacos-abas::-webkit-scrollbar{display:none}
+  .espacos-abas button{flex:none;height:44px;padding:0 16px;border:1px solid var(--cor-borda);border-radius:999px;background:#fff;color:var(--cor-texto);font-family:var(--fonte-texto);font-size:14px;font-weight:400;white-space:nowrap;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+  .espacos-abas button[aria-pressed="true"]{background:#F6E7E4;border-color:var(--cor-rubi);color:var(--cor-rubi);font-weight:500}
+  .espacos-lista{display:block}
+  .espaco{display:none;text-align:center}
+  .espaco.ativo{display:block;animation:surge .45s var(--ease)}
+  .espaco .foto{min-height:0;aspect-ratio:4/5;opacity:1}
+  .espaco .foto img{transform:none}
+  .espaco h3{display:none}
+  .espaco-detalhe{opacity:1;visibility:visible;transform:none;padding-top:18px;min-height:112px;box-sizing:border-box}   /* altura fixa: a seção não pula ao trocar de espaço */
+  .espaco-nome{display:none}
+  .espaco-leg{margin:0 auto;max-width:32ch;font-size:15px;line-height:1.4;color:var(--cor-texto)}
+  /* celular: as fotos viram cartões com rolagem lateral; tocar amplia */
+  .gastro-painel{height:auto;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin-inline:calc(-1*var(--respiro));padding:0 var(--respiro);scroll-padding-inline:var(--respiro)}
+  .gastro-painel::-webkit-scrollbar{display:none}
+  .gastro-item,.gastro-item.ativo{flex:0 0 min(80%,360px);height:auto;aspect-ratio:4/5;scroll-snap-align:start}
+  .gastro-item img{filter:none}
+  .gastro-zoom{opacity:1;transform:none;width:40px;height:40px;right:12px;bottom:12px}
+  .gastro-controles{display:flex;justify-content:center;gap:16px;margin-top:28px}   /* setas para passar as fotos (sem a linha de progresso) */
+}
+@media (max-width:560px){
+  body{font-size:16px}
+  .br-d{display:none}
+  .br-m{display:inline}
+  .hero-texto .texto{flex:1 1 100%;min-width:0;font-size:16px}
+  .cartao-barra .cartao-titulo{font-size:24px}
+  .tipos-rotulo{flex-basis:100%;margin:0 0 2px}
+  .campos-barra{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px}
+  .campos-barra .c-nome,.campos-barra .c-tel,.campos-barra .c-email,.campos-barra .btn{grid-column:1 / -1}
+  .form-barra .campos-barra .c-data,.form-barra .campos-barra .c-conv{grid-column:auto}
+  .pilula span{height:44px;padding:0 13px;font-size:13.5px}   /* área de toque mínima de 44 px no celular */
+  /* celular: menos respiro entre as seções (a página ficava longa demais) */
+  :root{--espaco-secao:72px}
+  .topo-secao{margin-bottom:36px}
+  .form-barra .campo input{height:44px;font-size:15px}
+  .campos-barra .btn{min-height:46px;font-size:14.5px}
+  /* celular: todos os títulos de seção com o mesmo tamanho */
+  h2,.hosp-texto h2,.contato-texto h2{font-size:calc(min(28px,(100vw - 2*var(--respiro)) / 13.3) * var(--esc-titulos,1));white-space:nowrap}   /* linha mais longa: "em um lugar especial" (12,3em) + folga */
+  /* subtítulos e textos com entrelinha menor no celular */
+  .texto{font-size:15px;line-height:1.4}   /* celular: todos os textos com o mesmo tamanho */
+  .espaco-leg{line-height:1.4}
+  .cartao{padding:24px 18px 22px}
+  .form{gap:12px 10px}
+  .form .campo{grid-column:1/-1}
+  .form .campo-meia{grid-column:auto}
+  /* galeria no celular: uma foto por vez, centralizada (as vizinhas ficam fora da tela) */
+  .galeria-trilho{gap:calc(2*var(--respiro));padding-inline:var(--respiro);scroll-padding-inline:var(--respiro);scroll-snap-type:x mandatory;cursor:auto}
+  .galeria-item{height:auto;width:calc(100vw - 2*var(--respiro));aspect-ratio:4/5;scroll-snap-align:center}
+  /* gastronomia no celular: uma foto por vez, centralizada; troca deslizando ou pelas miniaturas */
+  .gastro-painel{gap:calc(2*var(--respiro));padding:0 var(--respiro);scroll-padding-inline:var(--respiro)}
+  .gastro-item,.gastro-item.ativo{flex:0 0 calc(100vw - 2*var(--respiro));scroll-snap-align:center}
+  .gastro-controles{display:none}
+  .gastro-miniaturas{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:14px}
+  .gastro-miniaturas button{position:relative;aspect-ratio:1;padding:0;border:0;overflow:hidden;background:#E7DCCB;cursor:pointer;opacity:.5;transition:opacity .25s,box-shadow .25s}
+  .gastro-miniaturas button[aria-pressed="true"]{opacity:1;box-shadow:0 0 0 2px var(--cor-papel),0 0 0 3px var(--cor-rubi)}
+  .gastro-miniaturas img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  /* contato no celular: seção compacta, título + formulário cabem numa tela sem rolar */
+  .secao.contato{padding:30px 0 32px}
+  .contato-corpo{gap:16px}
+  .contato-texto .onda{display:none}
+  .contato-texto .texto{margin-top:8px}
+  .contato-endereco{margin-top:8px}
+  .contato-endereco a{font-size:13px;line-height:1.38;gap:8px}
+  .contato-endereco svg{width:16px;height:16px}
+  /* endereço em uma linha só: rua e cidade (bairro e CEP ficam no mapa) */
+  .contato-endereco .end-texto{display:none}
+  .contato-endereco .end-curto{display:inline;white-space:nowrap}
+  .contato-endereco a{font-size:min(13px,(100cqi - 24px) / 25.1)}   /* 23,5em de texto + folga */
+  .contato .cartao{padding:14px 14px 16px;border-radius:4px}
+  .form-contato{gap:9px 8px}
+  .form-contato .campo{grid-column:auto;gap:3px}
+  .form-contato .campo-inteiro{grid-column:1/-1}
+  .form-contato .campo label{font-size:11.5px}
+  .form-contato .campo input,.form-contato .campo select{height:44px;font-size:16px}   /* 16 px: o iPhone não dá zoom ao tocar no campo */
+  .form-contato .btn{margin-top:3px;min-height:48px}
+  .form-contato .campo input{padding:0 11px}
+  .form-contato .campo input::placeholder{font-size:14px}
+  .linhas-cel .l{display:block;white-space:nowrap}   /* linhas fixas no celular */
+  .linhas-cel.quebra-livre .l{display:inline;white-space:normal}
+  .so-computador{display:none}
+  .so-celular{display:block}
+  .conceito-texto{text-align:center}
+  .conceito-texto .texto{margin-inline:auto;font-size:15px;line-height:1.4}
+  .lightbox-corpo{padding:64px 12px}
+  .lightbox-corpo img{max-width:calc(100vw - 24px);max-height:calc(100vh - 136px);max-height:calc(100dvh - 136px)}
+  .lb-ant,.lb-prox{top:auto;bottom:14px;transform:none;width:46px;height:46px}
+  .lb-ant{left:14px}.lb-prox{right:14px}
+  .lb-fechar{top:12px;right:12px;width:46px;height:46px}
+  .lb-contador{bottom:28px}
+  .rodape p{font-size:11.5px}
+}
+@media (max-width:767px){
+  /* celular: só a foto, com logo | título centralizados na base, sobre a névoa.
+     Sem subtítulo e sem formulário (o pedido de orçamento fica na seção de contato e no WhatsApp) */
+  /* tela cheia, como é o padrão de hero no celular (svh: altura visível com as barras do navegador) */
+  .hero{--foto-zoom:1.04;min-height:560px;height:100svh;overflow:hidden;background:rgb(var(--nevoa-hero))}   /* overflow: o brilho atrás do logo não vaza sobre a faixa rubi */
+  .hero-foto::after{background:linear-gradient(0deg,rgb(var(--nevoa-hero)) 0,rgba(var(--nevoa-hero),.93) 24%,rgba(var(--nevoa-hero),.62) 31%,rgba(var(--nevoa-hero),.22) 38%,rgba(var(--nevoa-hero),0) 45%)}
+  .hero-cena{padding:0 0 clamp(96px,26vw,124px);gap:0}   /* título acima da área do botão do WhatsApp */
+  .hero-cabeca{padding-top:0}
+  .hero-texto{justify-content:center}
+  /* logo centralizado acima do título */
+  .hero-titulo{--titulo-fs:min(40px,(100vw - 2*var(--respiro)) / 13.4);flex:1 1 100%;flex-direction:column;align-items:center;gap:18px;text-align:center}
+  .hero h1{align-self:stretch;white-space:nowrap}
+  .hero-titulo::before{left:50%;top:-70px;width:380px;transform:translateX(-50%)}
+  .hero-divisor{display:none}
+  .hero-logo{height:clamp(80px,23vw,104px)}
+  .hero-texto .texto,.hero-form{display:none}
+}
+@media (max-width:640px){
+  /* rodapé no celular: logo, direitos e crédito empilhados e centralizados */
+  /* rodapé no celular: logo | direitos e crédito, lado a lado e centralizados (opção A) */
+  .rodape{padding:26px 0 28px}
+  .rodape-linha{grid-template-columns:auto auto;justify-content:center;align-items:center;column-gap:18px;row-gap:8px;text-align:left}
+  .rodape-logo{grid-row:1 / 3;justify-self:end;padding-right:18px;border-right:1px solid rgba(211,150,0,.55)}
+  .rodape-logo img{height:64px}
+  .rodape-direitos{align-self:end;line-height:1.45;color:var(--cor-papel)}
+  .rodape-credito{justify-self:start;align-self:start;gap:8px}
+  .rodape .rodape-dmove img{width:56px}
+  .rodape-traco{display:none}
+  .rodape-br{display:inline}
+  /* celular: a mesma linha, com cada número quebrado em duas linhas para manter a fonte legível */
+  .br-fato{display:inline}
+  .fatos{align-items:center;font-size:min(24px,(100vw - 2*var(--respiro) - 4*var(--g) - 16px) / 15.6);line-height:1.15}
+  .fatos li{display:inline-flex;align-items:center}
+}
+@media (max-width:640px) and (prefers-reduced-motion:no-preference){
+  /* celular: faixa corrida com os três números (com movimento reduzido, fica a versão parada em 3 colunas) */
+  .autoridade{padding:22px 0}
+  .fatos{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  .letreiro{display:block;overflow:hidden}
+  .letreiro-trilho{display:flex;width:max-content;animation:corre 26s linear infinite}
+  .letreiro-grupo{display:flex;align-items:center}
+  .letreiro-grupo span{padding:0 22px;font-family:var(--fonte-titulo);font-weight:300;font-size:22px;line-height:1.2;color:var(--cor-papel);white-space:nowrap}
+  .letreiro-grupo svg{flex:none;width:30px;height:18px;color:var(--cor-mostarda)}
+}
+@media (max-width:400px){
+  .pilula span{padding:0 11px;font-size:13px}
+  .form .campo-meia label,.form-barra .c-data label,.form-barra .c-conv label{font-size:11.5px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  .js .aparece{opacity:1;transform:none}
+}
+
+/* ---------- ajustes do formulário padrão Dmove no hero ---------- */
+@media (max-width:1199px){
+  .tipos-select select{height:38px;min-width:220px;padding:0 34px 0 14px;font-size:13px}
+  .tipos-select::after{right:14px}
+}
+@media (max-width:560px){
+  .tipos-select,.tipos-select select{width:100%}
+}
