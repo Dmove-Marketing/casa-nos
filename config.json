@@ -11,7 +11,7 @@
   "whatsapp": {
     "phone": "5511961979680",
     "display_name": "CasaNós",
-    "avatar": "/images/whatsapp-avatar.jpg",
+    "avatar": "https://media.dmove.com.br/clients/casa-nos/photos/apple-touch-icon.webp",
     "enabled": true
   },
   "forms": {
