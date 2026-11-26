@@ -610,6 +610,16 @@ const introMessages = [
     openPopup('teaser');
   });
 
+  // Outros gatilhos da página (ex.: telefone no rodapé, data-wa-open="rodape") abrem o MESMO popup,
+  // nunca um link direto para wa.me. O valor vira o link_location do whatsapp_click.
+  document.querySelectorAll('[data-wa-open]').forEach((el) => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation(); // senão o "clique fora" fecha o popup no mesmo clique
+      openPopup(el.getAttribute('data-wa-open') || 'link');
+    });
+  });
+
   // O calendário (flatpickr) é anexado ao <body>, FORA do popup. Enquanto ele
   // estiver aberto, nenhum clique/ESC deve fechar o popup. O estado vem do
   // próprio flatpickr (window.__waCalendarOpen, definido via onOpen/onClose no

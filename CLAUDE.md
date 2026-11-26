@@ -96,7 +96,7 @@ O container de GTM padrão da Dmove **lê sinais específicos do site**. Se o si
 - **`window.__page_event_id`** — UUID por pageview; o GTM usa como `event_id` do Pixel e o site manda o MESMO id no webhook → dedup Pixel×CAPI.
 - **PII pelo DOM** — o GTM lê e-mail/telefone/nome do formulário que enviou: `form[data-form-id="<form_id>"] [name=nome|telefone|email]` (ver Fase 4) ou, no popup do WhatsApp, o espelho `[data-wa-form]` (`Nome`, `WhatsApp`, `E-mail`). **Não** mande PII no dataLayer.
 - **`form_submit`** (form e WhatsApp) dispara a conversão **Lead** — payload limpo: `{ event, form_source: 'form'|'whatsapp', form_id, tipo_evento, event_id }`. Idem `form_start`/`form_error`. Com redirect, o `forms.ts` espera o GTM (`eventCallback`) antes de navegar.
-- **`whatsapp_click`** dispara a conversão **Contact** (`click_type: 'abrir_popup'`, `link_location: 'flutuante'|'teaser'`). Depois do lead, o botão "Continuar no WhatsApp" manda `click_type: 'continuar_conversa'`, que vai só ao GA4. Link direto para `wa.me` fora do widget: emitir `whatsapp_click` com `click_type: 'link_direto'`.
+- **`whatsapp_click`** dispara a conversão **Contact** (`click_type: 'abrir_popup'`, `link_location: 'flutuante'|'teaser'`). Depois do lead, o botão "Continuar no WhatsApp" manda `click_type: 'continuar_conversa'`, que vai só ao GA4. Link direto para `wa.me` fora do widget: emitir `whatsapp_click` com `click_type: 'link_direto'`. Preferível: um elemento com `data-wa-open="<local>"` (ex.: telefone no rodapé) abre o próprio popup e manda `link_location: '<local>'`.
 - **Nunca** ligue o envio ao submit nativo do GTM ("Envio de formulário"): conta o lead em dobro.
 - **Container padrão: `docs/gtm/GTM-modelo-dmove-astro-v2.json`** (como importar e configurar: `docs/gtm/LEIA-ME.md`). O antigo `GTM-PKJ6HVMP` é do WordPress/Elementor e não serve para sites Astro.
 
@@ -144,6 +144,7 @@ Prefira perguntar tudo o que puder **de uma vez** no início.
 - **`src/components/ui/`** — `Img` (otimização build), `Video` (self-host + JSON-LD), `StaticMap`, `WhatsAppWidget`.
 - **`src/styles/global.css`** — design system base (tokens de cor/fonte/espaçamento). Sobrescreva os tokens no CSS do projeto.
 - **`tools/extract-preview.mjs`** — separa base64 do HTML. **`tools/shot.mjs`** — screenshots de QA.
+- **Site + blog (CasaNós):** home one page em `src/pages/index.astro` (`SiteHeader`/`SiteFooter` em `src/components/site/`); páginas internas usam `src/layouts/SiteLayout.astro`. Posts em `src/content/blog/<slug>.md` (frontmatter `title, description, date, category, image, imageAlt`, opcional `draft: true`), lidos por `src/lib/blog.ts`; `sitemap.xml` e `robots.txt` são gerados em `src/pages/`.
 
 ## Referência rápida
 

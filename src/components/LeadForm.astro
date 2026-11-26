@@ -9,8 +9,9 @@ interface Props {
   preset?: string;
   /** vai em data-form-id (GTM/n8n) */
   formId: string;
-  /** `cartao` = grade de 2 colunas; `barra` = título + tipo de evento no topo e campos em linha (hero) */
-  variant?: 'cartao' | 'barra';
+  /** `cartao` = grade de 2 colunas (LP); `barra` = título + tipo de evento no topo e campos em linha (hero);
+      `grade` = formulário do site (.form-grade + .campo.largo + .botao) */
+  variant?: 'cartao' | 'barra' | 'grade';
   /** prefixo dos ids dos campos (precisa ser único por formulário na página) */
   idPrefix?: string;
   /** tipo de evento já selecionado (valor de tipoEventoOptions) */
@@ -79,11 +80,12 @@ const fid = formId;
       </div>
     )}
 
-    <div class={variant === 'barra' ? 'campos-barra' : 'campos-cartao'}>
+    <div class={variant === 'barra' ? 'campos-barra' : variant === 'grade' ? 'form-grade' : 'campos-cartao'}>
       {fields.map((f) => {
         const classes = [
           'campo',
           variant === 'cartao' && inteiros.has(f.name) && 'campo-inteiro',
+          variant === 'grade' && (f.name === 'detalhes_adicionais' || f.name === 'empresa') && 'largo',
           variant === 'cartao' && !inteiros.has(f.name) && f.name !== 'telefone' && f.name !== 'email' && 'campo-meia',
           f.type === 'select' && 'campo-select',
           variant === 'barra' && f.name === 'nome' && 'c-nome',
@@ -124,8 +126,9 @@ const fid = formId;
           </div>
         );
       })}
-      <button type="submit" class="btn btn-primario form-submit">{buttonLabel}</button>
+      {variant !== 'grade' && <button type="submit" class="btn btn-primario form-submit">{buttonLabel}</button>}
     </div>
+    {variant === 'grade' && <button type="submit" class="botao form-submit">{buttonLabel}</button>}
 
     <!-- honeypot anti-spam (invisível para pessoas) -->
     <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />

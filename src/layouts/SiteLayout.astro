@@ -1,0 +1,71 @@
+---
+// Layout das páginas internas do site (blog e posts): mesmo cabeçalho, rodapé e popup de WhatsApp da home.
+import Base from './Base.astro';
+import SiteSprite from '../components/site/SiteSprite.astro';
+import SiteHeader from '../components/site/SiteHeader.astro';
+import SiteFooter from '../components/site/SiteFooter.astro';
+import config from '../../config.json';
+import '../styles/site.css';
+import '../styles/blog.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  canonical?: string;
+  noIndex?: boolean;
+  jsonLd?: Record<string, any>;
+  active?: 'blog';
+}
+const photos = `${config.media.cdn_base}/photos`;
+const fonts = `${config.media.cdn_base}/fonts`;
+const { title, description, ogImage = `${photos}/hero-casa.webp`, canonical, noIndex = false, jsonLd, active } = Astro.props;
+---
+<Base
+  title={title}
+  description={description}
+  ogImage={ogImage}
+  canonical={canonical}
+  theme="light"
+  noIndex={noIndex}
+  jsonLd={jsonLd}
+  favicon={`${photos}/favicon.webp`}
+  faviconSvg={`${photos}/favicon.svg`}
+  appleTouchIcon={`${photos}/apple-touch-icon.webp`}
+>
+  <Fragment slot="head">
+    <meta name="theme-color" content="#FBF7F1" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preload" href={`${fonts}/Franie-Light.woff2`} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={`${fonts}/ClarityCity-Light.woff2`} as="font" type="font/woff2" crossorigin />
+    <slot name="head" />
+  </Fragment>
+
+  <SiteSprite />
+  <SiteHeader active={active} />
+  <main id="conteudo" class="pagina-interna">
+    <slot />
+  </main>
+  <SiteFooter />
+
+  <script>
+    // menu do celular (na home isso fica no home.js)
+    const nav = document.getElementById('nav');
+    const menu = document.getElementById('menu-celular');
+    const botao = nav?.querySelector<HTMLButtonElement>('.nav-menu');
+    if (nav && menu && botao) {
+      const rotulo = botao.querySelector('.rot-menu');
+      const abrir = (sim: boolean) => {
+        menu.classList.toggle('aberto', sim);
+        menu.setAttribute('aria-hidden', sim ? 'false' : 'true');
+        botao.setAttribute('aria-expanded', sim ? 'true' : 'false');
+        if (rotulo) rotulo.textContent = sim ? 'Fechar' : 'Menu';
+        nav.classList.toggle('menu-aberto', sim);
+        document.body.style.overflow = sim ? 'hidden' : '';
+      };
+      botao.addEventListener('click', () => abrir(!menu.classList.contains('aberto')));
+      menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => abrir(false)));
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') abrir(false); });
+    }
+  </script>
+</Base>

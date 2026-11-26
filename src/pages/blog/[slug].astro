@@ -1,0 +1,92 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import config from '../../../config.json';
+import { getPosts, formatarData, srcsetCdn } from '../../lib/blog';
+
+export function getStaticPaths() {
+  return getPosts().map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const outros = getPosts().filter((p) => p.slug !== post.slug).slice(0, 4);
+const data = formatarData(post.date);
+const Content = post.Content;
+
+const title = `${post.title} | CasaNós`;
+const canonical = `https://${config.domain}/blog/${post.slug}`;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.title,
+  description: post.description,
+  image: post.image,
+  datePublished: post.date,
+  url: canonical,
+  inLanguage: 'pt-BR',
+  author: { '@type': 'Organization', name: 'CasaNós' },
+  publisher: { '@type': 'Organization', name: 'CasaNós' },
+};
+---
+<SiteLayout title={title} description={post.description} canonical={canonical} ogImage={post.image} jsonLd={jsonLd} noIndex={post.draft} active="blog">
+  <article class="secao post">
+    <div class="c post__grade">
+      <div class="post__principal">
+        <nav class="post__trilha" aria-label="Você está em">
+          <a href="/blog">Blog</a> <span aria-hidden="true">/</span> <span>{post.category}</span>
+        </nav>
+        <h1 class="post__titulo">{post.title}</h1>
+        <p class="post__data"><time datetime={post.date}>{data.extenso}</time></p>
+        <img class="post__imagem" src={post.image} srcset={srcsetCdn(post.image, [600, 900])} sizes="(max-width: 1000px) 100vw, 66vw" width="1200" height="675" alt={post.imageAlt} fetchpriority="high" decoding="async" />
+
+        <div class="post__compartilhar" data-compartilhar>
+          <span>Compartilhe:</span>
+          <a href="https://www.facebook.com/sharer/sharer.php" data-rede="facebook" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5h2.5l.5-3h-3V8.6c0-.9.3-1.6 1.6-1.6h1.5V4.3c-.3 0-1.2-.1-2.2-.1-2.3 0-3.9 1.4-3.9 4v2.3H8v3h2.5V21h3z"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/sharing/share-offsite/" data-rede="linkedin" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5.2 9.2h3v9.6h-3V9.2zM6.7 4.6a1.7 1.7 0 1 1 0 3.5 1.7 1.7 0 0 1 0-3.5zM10.1 9.2H13v1.3c.4-.8 1.4-1.5 2.9-1.5 3 0 3.6 2 3.6 4.6v5.2h-3v-4.6c0-1.1 0-2.5-1.5-2.5s-1.8 1.2-1.8 2.4v4.7h-3V9.2z"/></svg>
+          </a>
+          <a href="https://api.whatsapp.com/send" data-rede="whatsapp" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no WhatsApp">
+            <svg aria-hidden="true"><use href="#whatsapp" /></svg>
+          </a>
+        </div>
+
+        <div class="post__corpo"><Content /></div>
+
+        <aside class="post__cta">
+          <svg class="onda" viewBox="0 0 70 42" aria-hidden="true"><use href="#onda" /></svg>
+          <h2>Vamos começar a planejar sua próxima comemoração?</h2>
+          <p>Preencha o formulário para receber nosso contato.</p>
+          <a class="botao botao-claro" href="/#contato">Solicite orçamento</a>
+        </aside>
+      </div>
+
+      {outros.length > 0 && (
+        <aside class="post__lateral" aria-labelledby="mais-posts">
+          <h2 id="mais-posts">Continue lendo</h2>
+          {outros.map((p) => (
+            <a class="post-mini" href={`/blog/${p.slug}`}>
+              <img loading="lazy" decoding="async" src={p.image} srcset={srcsetCdn(p.image, [200, 400])} sizes="108px" width="600" height="400" alt="" />
+              <span class="post-mini__texto"><strong>{p.title}</strong><em>Ler post</em></span>
+            </a>
+          ))}
+        </aside>
+      )}
+    </div>
+  </article>
+
+  <script>
+    // Links de compartilhamento com o endereço da página aberta (é o post da própria URL de produção).
+    const url = encodeURIComponent(location.href);
+    const titulo = encodeURIComponent(document.title);
+    const base: Record<string, string> = {
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+      whatsapp: `https://api.whatsapp.com/send?text=${titulo}%20${url}`,
+    };
+    document.querySelectorAll<HTMLAnchorElement>('[data-compartilhar] [data-rede]').forEach((a) => {
+      const href = base[a.dataset.rede || ''];
+      if (href) a.href = href;
+    });
+  </script>
+</SiteLayout>

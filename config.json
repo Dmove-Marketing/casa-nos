@@ -1,5 +1,5 @@
 {
-  "project_name": "CasaNós — Casamentos e Bio",
+  "project_name": "CasaNós — Site, Blog, Casamentos e Bio",
   "project_slug": "casa-nos",
   "domain": "casanos.com.br",
   "client": "CasaNós",
@@ -9,7 +9,7 @@
     "enabled": true
   },
   "whatsapp": {
-    "phone": "5511900000000",
+    "phone": "5511961979680",
     "display_name": "CasaNós",
     "avatar": "/images/whatsapp-avatar.jpg",
     "enabled": true

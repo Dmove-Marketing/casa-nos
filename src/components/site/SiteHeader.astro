@@ -1,0 +1,45 @@
+---
+// Cabeçalho único do site (home, blog e páginas internas). Na home as âncoras são locais (#espaco);
+// nas outras páginas apontam para a home (/#espaco). Logo ao centro, links dos dois lados.
+interface Props {
+  /** true na home: âncoras locais e o JS da home controla o estado "solida" e o link ativo */
+  home?: boolean;
+  /** página ativa no menu */
+  active?: 'blog';
+}
+const { home = false, active } = Astro.props;
+const p = home ? '' : '/';
+const esquerda = [
+  { href: home ? '#topo' : '/', label: 'Home' },
+  { href: `${p}#espaco`, label: 'Espaço' },
+  { href: `${p}#eventos`, label: 'Eventos' },
+];
+const direita = [
+  { href: `${p}#galeria`, label: 'Galeria' },
+  { href: `${p}#localizacao`, label: 'Localização' },
+  { href: '/blog', label: 'Blog', key: 'blog' },
+  { href: `${p}#contato`, label: 'Contato' },
+];
+const atual = (key?: string) => (active && key === active ? 'page' : undefined);
+---
+<a class="sr" href="#conteudo">Ir para o conteúdo</a>
+
+<header class:list={['nav', !home && 'solida']} id="nav">
+  <div class="nav-c">
+    <button class="nav-menu" type="button" aria-expanded="false" aria-controls="menu-celular"><i aria-hidden="true"></i><span class="rot-menu">Menu</span></button>
+    <ul class="nav-links nav-esq">
+      {esquerda.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+    </ul>
+    <a class="nav-logo" href={home ? '#topo' : '/'} aria-label="CasaNós, voltar ao início"><svg viewBox="-1 0 83 169.5" aria-hidden="true"><use href="#logo" /></svg></a>
+    <ul class="nav-links nav-dir">
+      {direita.map((l) => <li><a href={l.href} aria-current={atual(l.key)}>{l.label}</a></li>)}
+    </ul>
+    <a class="nav-insta" href="https://www.instagram.com/casanos.oficial/" target="_blank" rel="noopener" aria-label="Instagram da CasaNós"><svg aria-hidden="true"><use href="#instagram" /></svg></a>
+  </div>
+</header>
+
+<div class="menu-celular" id="menu-celular" aria-hidden="true">
+  <ul>
+    {[...esquerda, ...direita].map((l) => <li><a href={l.href} aria-current={atual(l.key)}>{l.label}</a></li>)}
+  </ul>
+</div>

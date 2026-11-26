@@ -1,0 +1,356 @@
+---
+// Home (one page) da CasaNós — design "index" do Claude Design convertido para Astro.
+// Cabeçalho e rodapé são os componentes do site (os mesmos do blog). Interações em src/scripts/home.js.
+import Base from '../layouts/Base.astro';
+import SiteSprite from '../components/site/SiteSprite.astro';
+import SiteHeader from '../components/site/SiteHeader.astro';
+import SiteFooter from '../components/site/SiteFooter.astro';
+import LeadForm from '../components/LeadForm.astro';
+import config from '../../config.json';
+import '../styles/site.css';
+import '../styles/home.css';
+
+const photos = `${config.media.cdn_base}/photos`;
+const fonts = `${config.media.cdn_base}/fonts`;
+const ph = { telefone: '(19) 90000-0000', email: 'seu@email.com', convidados: 'Ex.: 100' };
+
+const title = 'CasaNós · Casamentos e eventos em meio à natureza em Valinhos/SP';
+const description = 'Uma casa com história para reunir e celebrar. Casamentos e eventos corporativos em Valinhos/SP, próxima a Campinas e Vinhedo, com 40 mil m² de área e gastronomia autoral.';
+const canonical = `https://${config.domain}/`;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'EventVenue',
+  name: 'CasaNós',
+  description,
+  url: canonical,
+  image: `${photos}/hero-casa.webp`,
+  telephone: `+${config.whatsapp.phone}`,
+  sameAs: ['https://www.instagram.com/casanos.oficial/'],
+  maximumAttendeeCapacity: 120,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Rua Dr. Antônio Bento Ferraz, 500',
+    addressLocality: 'Valinhos',
+    addressRegion: 'SP',
+    postalCode: '13278-160',
+    addressCountry: 'BR',
+  },
+};
+---
+
+<Base
+  title={title}
+  description={description}
+  canonical={canonical}
+  ogImage={`${photos}/hero-casa.webp`}
+  theme="light"
+  jsonLd={jsonLd}
+  favicon={`${photos}/favicon.webp`}
+  faviconSvg={`${photos}/favicon.svg`}
+  appleTouchIcon={`${photos}/apple-touch-icon.webp`}
+>
+  <Fragment slot="head">
+    <meta name="theme-color" content="#F4ECE1" />
+    <link rel="preload" href={`${fonts}/Franie-Light.woff2`} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={`${fonts}/ClarityCity-Light.woff2`} as="font" type="font/woff2" crossorigin />
+    <!-- LCP: a foto do hero entra por um <image> do SVG, que o navegador só descobre tarde -->
+    <link rel="preload" as="image" type="image/webp" href={`${photos}/hero-casa.webp`} media="(min-width: 901px)" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/webp" href={`${photos}/hero-casa-celular.webp`} media="(max-width: 900px)" fetchpriority="high" />
+    <script is:inline>
+      /* abertura só na primeira visita da sessão (e nunca com "reduzir movimento") */
+      (function () {
+        try {
+          var reduz = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (!reduz && !sessionStorage.getItem('casanos-abertura')) document.documentElement.classList.add('com-abertura');
+        } catch (e) {}
+      })();
+    </script>
+  </Fragment>
+
+  <SiteSprite />
+
+  <div class="abertura" aria-hidden="true">
+    <div class="abertura-logo"><svg viewBox="-1 0 83 169.5"><use href="#logo"/></svg></div>
+  </div>
+
+  <SiteHeader home />
+
+  <main id="conteudo">
+
+    <!-- HERO -->
+    <section class="hero" id="topo" aria-label="Início: casa principal da CasaNós, com a capela ao lado">
+      <div class="hero-palco">
+        <div class="hero-nevoa" aria-hidden="true"></div>
+        <svg class="hero-cena hero-cena-d" viewBox="0 0 1440 900" preserveAspectRatio="xMinYMax slice" aria-hidden="true" focusable="false"><defs><clipPath id="janela-d"><path class="janela-forma" d="M -40.0 472.9 C 466.7 644.2 973.3 346.0 1480.0 498.6 C 1657.3 552.0 1940.0 552.0 2200.0 552.0 L 6000 552.0 L 6000 4000 L -40 4000 Z"/></clipPath><clipPath id="revela-d"><rect class="revela-rect" x="-70" y="0" width="740" height="900"/></clipPath></defs><g clip-path="url(#janela-d)"><image class="janela-foto" href={`${photos}/hero-casa.webp`} x="-40" y="-20" width="1520" height="940" preserveAspectRatio="xMinYMid slice"/></g><g class="janela-ondas"><g clip-path="url(#revela-d)"><path transform="matrix(10.4545 0 0 4.6763 -95.86 -267.17)" fill="currentColor" d="M 15.82 153.04 C 12.55 149.87 13.43 149.23 10.45 148.82 C 10.05 148.77 9.67 148.94 9.45 149.28 C 9.24 149.62 9.26 150.03 9.5 150.36 C 10.75 152.05 12.14 153.65 13.66 155.13 C 20.7 161.96 30.4 166.2 41.07 166.2 C 43.94 166.2 46.74 165.89 49.44 165.31 C 49.69 165.25 49.86 165.02 49.82 164.77 C 49.8 164.52 49.58 164.34 49.32 164.34 C 37.66 164.57 24.06 161.04 15.82 153.04 M 3.59 138.31 C 3.59 138.27 3.57 138.23 3.57 138.19 C 3.43 137.69 3.73 137.17 4.24 137.02 C 34.96 127.7 47.72 163.25 71.48 149.14 C 71.71 149.01 72 149.07 72.15 149.27 C 72.3 149.47 72.28 149.75 72.09 149.91 C 53.17 167.55 29.71 133.68 4.79 139.01 C 4.26 139.12 3.73 138.81 3.59 138.31 M 6.39 142.27 C 26.7 140.48 35.29 161.57 58.77 160.11 C 59.03 160.1 59.26 160.27 59.3 160.52 C 59.34 160.76 59.2 161 58.95 161.07 C 35.16 168.33 26.74 144.7 6.62 144.33 C 6.16 144.32 5.76 144.07 5.57 143.65 C 5.57 143.65 5.57 143.64 5.56 143.64 C 5.43 143.34 5.45 143.02 5.62 142.74 C 5.79 142.46 6.06 142.29 6.39 142.27"/></g></g></svg>
+        <svg class="hero-cena hero-cena-m" viewBox="0 0 390 844" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false"><defs><clipPath id="janela-m"><path class="janela-forma" d="M -20.0 334.6 C 123.3 532.0 266.7 294.3 410.0 375.9 L 410 3000 L -20 3000 Z"/></clipPath><clipPath id="revela-m"><rect class="revela-rect" x="-34" y="0" width="312" height="844"/></clipPath></defs><g clip-path="url(#janela-m)"><image class="janela-foto" href={`${photos}/hero-casa-celular.webp`} x="-10" y="-20" width="410" height="904" preserveAspectRatio="xMidYMid slice"/></g><g class="janela-ondas"><g clip-path="url(#revela-m)"><path transform="matrix(4.2399 0 0 3.1504 -38.54 -126.30)" fill="currentColor" d="M 15.82 153.04 C 12.55 149.87 13.43 149.23 10.45 148.82 C 10.05 148.77 9.67 148.94 9.45 149.28 C 9.24 149.62 9.26 150.03 9.5 150.36 C 10.75 152.05 12.14 153.65 13.66 155.13 C 20.7 161.96 30.4 166.2 41.07 166.2 C 43.94 166.2 46.74 165.89 49.44 165.31 C 49.69 165.25 49.86 165.02 49.82 164.77 C 49.8 164.52 49.58 164.34 49.32 164.34 C 37.66 164.57 24.06 161.04 15.82 153.04 M 3.59 138.31 C 3.59 138.27 3.57 138.23 3.57 138.19 C 3.43 137.69 3.73 137.17 4.24 137.02 C 34.96 127.7 47.72 163.25 71.48 149.14 C 71.71 149.01 72 149.07 72.15 149.27 C 72.3 149.47 72.28 149.75 72.09 149.91 C 53.17 167.55 29.71 133.68 4.79 139.01 C 4.26 139.12 3.73 138.81 3.59 138.31 M 6.39 142.27 C 26.7 140.48 35.29 161.57 58.77 160.11 C 59.03 160.1 59.26 160.27 59.3 160.52 C 59.34 160.76 59.2 161 58.95 161.07 C 35.16 168.33 26.74 144.7 6.62 144.33 C 6.16 144.32 5.76 144.07 5.57 143.65 C 5.57 143.65 5.57 143.64 5.56 143.64 C 5.43 143.34 5.45 143.02 5.62 142.74 C 5.79 142.46 6.06 142.29 6.39 142.27"/></g></g></svg>
+        <div class="c hero-texto">
+          <h1 class="hero-titulo"><span class="l"><span>Uma casa <br class="m">com história</span></span> <span class="l"><span>para reunir <br class="m">e&nbsp;celebrar</span></span></h1>
+          <div class="hero-acao"><a class="botao botao-hero" href="#contato">Solicite orçamento</a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AUTORIDADE -->
+    <section class="autoridade" id="autoridade" aria-label="A CasaNós em números">
+      <div class="c">
+        <ul class="fatos">
+          <li class="fato"><span class="fato-txt">Desde</span><span class="fato-num" data-conta="1983" data-de="2026">1983</span></li>
+          <li class="fato-sep" aria-hidden="true"><svg viewBox="0 0 70 42"><use href="#onda"/></svg></li>
+          <li class="fato"><span class="fato-num"><span data-conta="40" data-de="0">40</span> mil&nbsp;m²</span><span class="fato-txt">de área</span></li>
+          <li class="fato-sep" aria-hidden="true"><svg viewBox="0 0 70 42"><use href="#onda"/></svg></li>
+          <li class="fato"><span class="fato-txt">Até</span><span class="fato-num" data-conta="120" data-de="0">120</span><span class="fato-txt">convidados</span></li>
+        </ul>
+      </div>
+      <!-- celular: os números passam numa faixa contínua (a lista acima continua para leitores de tela) -->
+      <div class="fatos-faixa" aria-hidden="true"><div class="faixa-trilho"><div class="faixa-volta"><span class="faixa-it"><span class="rot">Desde</span><span class="num">1983</span></span><svg class="faixa-onda" viewBox="0 0 70 42"><use href="#onda"/></svg><span class="faixa-it"><span class="num">40 mil m²</span><span class="rot">de área</span></span><svg class="faixa-onda" viewBox="0 0 70 42"><use href="#onda"/></svg><span class="faixa-it"><span class="rot">Até</span><span class="num">120</span><span class="rot">convidados</span></span><svg class="faixa-onda" viewBox="0 0 70 42"><use href="#onda"/></svg></div><div class="faixa-volta"><span class="faixa-it"><span class="rot">Desde</span><span class="num">1983</span></span><svg class="faixa-onda" viewBox="0 0 70 42"><use href="#onda"/></svg><span class="faixa-it"><span class="num">40 mil m²</span><span class="rot">de área</span></span><svg class="faixa-onda" viewBox="0 0 70 42"><use href="#onda"/></svg><span class="faixa-it"><span class="rot">Até</span><span class="num">120</span><span class="rot">convidados</span></span><svg class="faixa-onda" viewBox="0 0 70 42"><use href="#onda"/></svg></div></div></div>
+    </section>
+
+    <!-- SOBRE -->
+    <section class="secao sobre" id="espaco">
+      <div class="c">
+        <div class="cab-secao">
+          <svg class="onda" viewBox="0 0 70 42" aria-hidden="true" data-revela><use href="#onda"/></svg>
+          <h2 class="titulo-secao" data-revela>Raízes que <br class="m">atravessam <br class="m">gerações.</h2>
+        </div>
+        <div class="sobre-texto">
+          <p class="so-cel" data-revela>A CasaNós nasceu do encontro entre duas&nbsp;histórias e do desejo <br>de aproximar pessoas. <br>Uma propriedade familiar em Valinhos, próxima&nbsp;a&nbsp;Campinas <br>e Vinhedo, para celebrações <br>e encontros com&nbsp;significado.</p>
+          <p class="so-desk" data-revela>A CasaNós nasceu do encontro entre duas histórias e do desejo de aproximar pessoas. Em uma propriedade familiar com raízes desde&nbsp;1983, natureza, família e hospitalidade se encontram em um ambiente pensado para receber celebrações e encontros com significado.</p>
+          <p class="so-desk" data-revela>Localizada em Valinhos, próxima a Campinas e Vinhedo, a CasaNós reúne 40&nbsp;mil&nbsp;m² de área, diferentes ambientes e uma atmosfera que convida a desacelerar, compartilhar e celebrar.</p>
+          <ul class="quadros" data-revela>
+            <li>Casamentos e Eventos&nbsp;corporativos</li>
+            <li>Gastronomia autoral</li>
+          </ul>
+        </div>
+        <div class="sobre-midia">
+          <div class="sobre-foto" data-revela><img src={`${photos}/sobre-alameda.webp`} width="2000" height="1125" alt="Alameda de pedra com postes de luz e palmeiras ao fim da tarde, entre o lago e o gramado da CasaNós" loading="lazy" decoding="async" data-paralaxe="-8"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EVENTOS -->
+    <section class="secao eventos" id="eventos">
+      <div class="c">
+        <div class="eventos-cab centro">
+          <svg class="onda" viewBox="0 0 70 42" aria-hidden="true" data-revela><use href="#onda"/></svg>
+          <h2 class="titulo-secao" data-revela>Diferentes ocasiões, <br>a mesma essência <br class="m">em&nbsp;receber</h2>
+        </div>
+        <div class="portas">
+          <article class="porta porta-casamentos" data-revela>
+            <img src={`${photos}/evento-casamentos.webp`} width="1400" height="2488" alt="Cerimônia de casamento à beira do lago, com o coreto ao fundo e os convidados dos dois lados do caminho" loading="lazy" decoding="async">
+            <div class="porta-texto">
+              <h3>Casamentos</h3>
+              <p>Uma casa com história, cercada <br class="m">pela natureza, <br class="d">para celebrar <br class="m">o amor de&nbsp;forma&nbsp;intimista.</p>
+              <a class="botao botao-claro botao-porta" href="#contato" data-tipo="Casamento">Solicite orçamento</a>
+            </div>
+          </article>
+          <article class="porta porta-corporativos" data-revela>
+            <img src={`${photos}/evento-corporativos.webp`} width="2400" height="1351" alt="Bate-papo corporativo no salão climatizado, com a plateia nas cadeiras e o jardim visível pelas portas de vidro" loading="lazy" decoding="async">
+            <div class="porta-texto">
+              <h3>Eventos <br class="d">corporativos</h3>
+              <p><span class="so-desk">Ambientes para receber encontros estratégicos, <br class="d">treinamentos, palestras, imersões e celebrações <br class="d">corporativas em meio à&nbsp;natureza.</span><span class="so-cel">Encontros, treinamentos <br>e celebrações corporativas <br>em meio à&nbsp;natureza.</span></p>
+              <a class="botao botao-claro botao-porta" href="#contato" data-tipo="Corporativo">Solicite orçamento</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- AMBIENTES -->
+    <section class="secao ambientes" id="ambientes">
+      <div class="c">
+        <div class="ambientes-cab">
+          <div>
+            <svg class="onda" viewBox="0 0 70 42" aria-hidden="true" data-revela><use href="#onda"/></svg>
+            <h2 class="titulo-secao" data-revela>Conheça <br class="m">os ambientes <br>da&nbsp;CasaNós</h2>
+          </div>
+          <ol class="ambientes-guia" aria-hidden="true"><li class="ativo"></li><li></li><li></li><li></li><li></li><li></li></ol>
+        </div>
+        <div class="pilha">
+          <article class="amb">
+            <div class="amb-cartao">
+              <div class="amb-foto"><img src={`${photos}/ambiente-jardim.webp`} width="1600" height="900" alt="Jardim com gramado, árvores e corredor de cerimônia montado" loading="lazy" decoding="async"></div>
+              <div class="amb-texto"><span class="amb-num">01<small>/06</small></span><h3>Jardim</h3><p>Área verde com paisagismo natural e árvores que compõem a paisagem da propriedade.</p></div>
+              <div class="amb-sombra" aria-hidden="true"></div>
+            </div>
+          </article>
+          <article class="amb">
+            <div class="amb-cartao">
+              <div class="amb-foto"><img src={`${photos}/ambiente-lago-coreto.webp`} width="1200" height="2133" alt="Caminho de pedras entre duas árvores que leva à passarela e ao coreto sobre o lago" loading="lazy" decoding="async" style="object-position:50% 55%"></div>
+              <div class="amb-texto"><span class="amb-num">02<small>/06</small></span><h3>Lago e coreto</h3><p>Lago integrado à paisagem, com coreto que acrescenta personalidade ao ambiente.</p></div>
+              <div class="amb-sombra" aria-hidden="true"></div>
+            </div>
+          </article>
+          <article class="amb">
+            <div class="amb-cartao">
+              <div class="amb-foto"><img src={`${photos}/ambiente-pergolado-capela.webp`} width="900" height="1600" alt="Pergolado com flores e a capela amarela entre as palmeiras" loading="lazy" decoding="async" style="object-position:50% 38%"></div>
+              <div class="amb-texto"><span class="amb-num">03<small>/06</small></span><h3>Pergolado e capela</h3><p>Ambientes acolhedores, em conexão com a história e a atmosfera da propriedade.</p></div>
+              <div class="amb-sombra" aria-hidden="true"></div>
+            </div>
+          </article>
+          <article class="amb">
+            <div class="amb-cartao">
+              <div class="amb-foto"><img src={`${photos}/ambiente-salao.webp`} width="900" height="1600" alt="Salão climatizado com mesa posta, madeira e janelas para o jardim" loading="lazy" decoding="async" style="object-position:50% 58%"></div>
+              <div class="amb-texto"><span class="amb-num">04<small>/06</small></span><h3>Salão climatizado</h3><p>Ambiente interno climatizado e integrado às áreas externas, com capacidade para até 100&nbsp;convidados sentados.</p></div>
+              <div class="amb-sombra" aria-hidden="true"></div>
+            </div>
+          </article>
+          <article class="amb">
+            <div class="amb-cartao">
+              <div class="amb-foto"><img src={`${photos}/ambiente-area-externa.webp`} width="1600" height="900" alt="Varanda coberta da casa com mesa posta e flores" loading="lazy" decoding="async"></div>
+              <div class="amb-texto"><span class="amb-num">05<small>/06</small></span><h3>Área externa coberta</h3><p>200&nbsp;m² de área coberta para ampliar as possibilidades de recepção, convivência e integração.</p></div>
+              <div class="amb-sombra" aria-hidden="true"></div>
+            </div>
+          </article>
+          <article class="amb">
+            <div class="amb-cartao">
+              <div class="amb-foto"><img src={`${photos}/ambiente-piscina.webp`} width="1600" height="900" alt="Piscina ao ar livre cercada por árvores e balaustrada" loading="lazy" decoding="async"></div>
+              <div class="amb-texto"><span class="amb-num">06<small>/06</small></span><h3>Piscina</h3><p>Ambiente ao ar livre que pode receber lounges, pista de dança e diferentes configurações de evento.</p></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- GASTRONOMIA -->
+    <section class="secao gastronomia" id="gastronomia">
+      <div class="c">
+        <div class="cab-secao">
+          <svg class="onda" viewBox="0 0 70 42" aria-hidden="true" data-revela><use href="#onda"/></svg>
+          <h2 class="titulo-secao" data-revela>Gastronomia que <br class="m">também <br class="d">faz parte <br class="m">da experiência</h2>
+        </div>
+        <div class="gastro-texto">
+          <p data-revela>Sob a assinatura do Chef Lucas&nbsp;Vieira, a&nbsp;gastronomia da CasaNós valoriza uma&nbsp;cozinha autoral e afetiva, com influências portuguesas e&nbsp;espanholas.</p>
+          <p data-revela>Os cardápios são construídos <br class="m">em conjunto com os anfitriões, <br class="m">considerando as preferências <br class="m">e a identidade de cada ocasião. <br class="m">Uma proposta que transforma <br class="m">a experiência à mesa <br class="m">em parte da celebração.</p>
+          <ul class="quadros" data-revela>
+            <li>Menus personalizados</li>
+            <li>Cozinha autoral e afetiva</li>
+            <li>Influências portuguesas e espanholas</li>
+          </ul>
+        </div>
+        <div class="gastro-galeria">
+          <div class="gastro-fotos">
+            <figure class="ativa"><img src={`${photos}/gastronomia-chef.webp`} width="1000" height="1333" alt="Chef Lucas Vieira finalizando um prato" loading="lazy" decoding="async" style="object-position:50% 3%"><figcaption>Chef Lucas Vieira</figcaption></figure>
+            <figure><img src={`${photos}/gastronomia-03.webp`} width="1400" height="788" alt="Entradas servidas em pratos de cerâmica" loading="lazy" decoding="async"></figure>
+            <figure><img src={`${photos}/gastronomia-02.webp`} width="900" height="1600" alt="Mesa posta com pães, frutas e flores brancas" loading="lazy" decoding="async" style="object-position:50% 58%"></figure>
+            <figure><img src={`${photos}/gastronomia-01.webp`} width="1400" height="788" alt="Panela de paella com legumes" loading="lazy" decoding="async"></figure>
+            <figure><img src={`${photos}/gastronomia-05.webp`} width="1400" height="788" alt="Mesa de frios, pães e flores" loading="lazy" decoding="async"></figure>
+            <figure><img src={`${photos}/gastronomia-04.webp`} width="1400" height="788" alt="Paella de frutos do mar" loading="lazy" decoding="async"></figure>
+          </div>
+          <div class="gastro-miniaturas" aria-label="Escolha uma foto da gastronomia">
+            <button type="button" aria-current="true" aria-label="Foto 1: Chef Lucas Vieira"><img src={`${photos}/gastronomia-chef.webp`} alt="" loading="lazy" decoding="async" style="object-position:50% 3%"></button>
+            <button type="button" aria-current="false" aria-label="Foto 2: entradas"><img src={`${photos}/gastronomia-03.webp`} alt="" loading="lazy" decoding="async"></button>
+            <button type="button" aria-current="false" aria-label="Foto 3: mesa posta"><img src={`${photos}/gastronomia-02.webp`} alt="" loading="lazy" decoding="async" style="object-position:50% 58%"></button>
+            <button type="button" aria-current="false" aria-label="Foto 4: paella com legumes"><img src={`${photos}/gastronomia-01.webp`} alt="" loading="lazy" decoding="async"></button>
+            <button type="button" aria-current="false" aria-label="Foto 5: mesa de frios"><img src={`${photos}/gastronomia-05.webp`} alt="" loading="lazy" decoding="async"></button>
+            <button type="button" aria-current="false" aria-label="Foto 6: paella de frutos do mar"><img src={`${photos}/gastronomia-04.webp`} alt="" loading="lazy" decoding="async"></button>
+          </div>
+          <div class="gastro-controles">
+            <div class="gastro-barra" aria-hidden="true"><span></span></div>
+            <div class="gastro-setas">
+              <button type="button" class="gastro-ant" aria-label="Foto anterior"><svg aria-hidden="true"><use href="#seta-esq"/></svg></button>
+              <button type="button" class="gastro-prox" aria-label="Próxima foto"><svg aria-hidden="true"><use href="#seta-dir"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MANIFESTO -->
+    <section class="secao manifesto" id="manifesto">
+      <div class="c">
+        <h2 class="titulo-secao centro" data-revela>Nossa história é feita <br>de encontros e&nbsp;fé</h2>
+        <div class="manifesto-grade">
+          <div class="manifesto-foto" data-revela><img src={`${photos}/manifesto-bruno-mariana.webp`} width="1400" height="2489" alt="Bruno e Mariana dançando no corredor da cerimônia, entre as cadeiras e as luzes, no dia do casamento" loading="lazy" decoding="async" data-paralaxe="-12" style="object-position:50% 100%"></div>
+          <div class="manifesto-texto">
+            <p class="so-desk" data-palavras>A CasaNós nasceu do encontro entre Bruno e Mariana e de uma fé compartilhada: a de que os laços que construímos e as pessoas que recebemos são presentes que merecem ser celebrados. Dessa crença vem o desejo de aproximar pessoas e fazer de cada recepção um gesto de carinho e acolhimento.</p>
+            <p class="so-cel manifesto-cel">A CasaNós nasceu do encontro <br>entre Bruno e Mariana e de uma <br>fé compartilhada: a de que os laços <br>que construímos e as pessoas <br>que recebemos são presentes <br>que merecem ser celebrados.</p>
+            <p class="so-desk" data-palavras>Com 25 anos de trajetória na hospitalidade, Bruno acredita que receber é fazer alguém se sentir esperado e pertencente. Mariana compartilha esse olhar e valoriza a força das relações humanas, da família e dos vínculos que atravessam gerações.</p>
+            <p class="so-cel manifesto-cel">Com 25 anos de trajetória na <br>hospitalidade, Bruno acredita <br>que receber é fazer alguém <br>se sentir esperado e pertencente. <br>Mariana compartilha esse olhar <br>e valoriza a força das relações <br>humanas, da família e dos vínculos <br>que atravessam gerações.</p>
+            <p class="so-desk" data-palavras>Em uma propriedade familiar com raízes desde 1983, os dois encontraram o lugar para cultivar esse sonho e abrir as portas a novas histórias, guiados pela fé, pelo amor e pela alegria de reunir pessoas.</p>
+            <p class="so-cel manifesto-cel">Em uma propriedade familiar <br>com raízes desde 1983, os dois <br>encontraram o lugar para cultivar <br>esse sonho e abrir as portas a <br>novas histórias.</p>
+            <p class="manifesto-fecho"><span class="fecho-linha" aria-hidden="true"></span><svg viewBox="0 0 70 42" aria-hidden="true"><use href="#onda"/></svg><span class="fecho-frase"><span class="fw"><span>Receber,</span></span> <span class="fw"><span>celebrar</span></span> <span class="fw"><span>e&nbsp;amar.</span></span></span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALERIA -->
+    <section class="secao galeria" id="galeria">
+      <div class="c">
+        <div class="galeria-cab centro">
+          <svg class="onda" viewBox="0 0 70 42" aria-hidden="true" data-revela><use href="#onda"/></svg>
+          <h2 class="titulo-secao" data-revela>Descubra os <br class="m">cenários da&nbsp;CasaNós</h2>
+        </div>
+        <div class="galeria-palco">
+          <div class="mosaico" id="mosaico">
+            <button type="button" class="ga-a" data-indice="0"><img src={`${photos}/galeria-11.webp`} width="2000" height="1124" alt="Aula de yoga ao pôr do sol no gramado à beira do lago, diante do coreto" loading="lazy" decoding="async" style="object-position:50% 62%"></button>
+            <button type="button" class="ga-b" data-indice="1"><img src={`${photos}/noivos-bruno-mariana.webp`} width="1368" height="2416" alt="Bruno e Mariana, fundadores da CasaNós, abraçados no dia do casamento à beira do lago" loading="lazy" decoding="async" style="object-position:50% 22%"></button>
+            <button type="button" class="ga-c" data-indice="2"><img src={`${photos}/ambiente-salao.webp`} width="900" height="1600" alt="Salão climatizado com mesa posta e portas abertas para o jardim" loading="lazy" decoding="async" style="object-position:50% 62%"></button>
+            <button type="button" class="ga-d" data-indice="3"><img src={`${photos}/galeria-04.webp`} width="1400" height="788" alt="Gramado sombreado por árvores antigas" loading="lazy" decoding="async"></button>
+            <button type="button" class="ga-m" data-indice="4"><img src={`${photos}/galeria-01.webp`} width="1400" height="785" alt="Cerimônia montada à beira do lago, com arco de flores e o coreto ao fundo" loading="lazy" decoding="async"></button>
+            <button type="button" class="ga-f" data-indice="5"><img src={`${photos}/galeria-12.webp`} width="1200" height="2131" alt="Jardim entre as árvores com cadeiras em volta de uma fogueira e caminho de pedriscos" loading="lazy" decoding="async" style="object-position:50% 58%"></button>
+            <button type="button" class="ga-g" data-indice="6"><img src={`${photos}/galeria-10.webp`} width="2000" height="1316" alt="Salão climatizado montado em formato auditório, com tela de projeção e portas de vidro para o jardim" loading="lazy" decoding="async"></button>
+            <button type="button" class="ga-h" data-indice="7"><img src={`${photos}/galeria-07.webp`} width="1400" height="788" alt="Caminho entre jardins com a casa ao fundo" loading="lazy" decoding="async"></button>
+          </div>
+          <p class="galeria-dica">Clique nas fotos para ampliar</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOCALIZAÇÃO -->
+    <section class="secao localizacao" id="localizacao">
+      <div class="c">
+        <div class="local-texto">
+          <svg class="onda" viewBox="0 0 70 42" aria-hidden="true" data-revela><use href="#onda"/></svg>
+          <h2 class="titulo-secao" data-revela>Uma casa <br>em meio <br>à natureza, <br>perto de tudo <br>o que importa</h2>
+          <a class="endereco" data-revela href="https://www.google.com/maps/search/?api=1&amp;query=Rua%20Dr.%20Ant%C3%B4nio%20Bento%20Ferraz%2C%20500%2C%20Valinhos%20-%20SP%2C%2013278-160" target="_blank" rel="noopener">
+            <svg aria-hidden="true"><use href="#pino"/></svg>
+            <span>Rua Dr. Antônio <span class="nb">Bento Ferraz, 500</span><br>Bairro Dois Córregos<br>Valinhos, SP, 13278-160</span>
+          </a>
+          <div data-revela><a class="botao" href="#contato">Agende sua visita<svg aria-hidden="true"><use href="#seta-dir"/></svg></a></div>
+        </div>
+        <div class="local-midia">
+          <div class="local-foto" data-revela><img src={`${photos}/localizacao-portao.webp`} width="1600" height="900" alt="Portão de entrada da CasaNós, com a placa do número 500" loading="lazy" decoding="async"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTATO -->
+    <section class="secao contato" id="contato">
+      <div class="c">
+        <div class="contato-texto">
+          <svg class="onda" viewBox="0 0 70 42" aria-hidden="true" data-revela><use href="#onda"/></svg>
+          <h2 class="titulo-secao" data-revela>Vamos começar <br>a planejar <br>sua próxima <br>comemoração?</h2>
+          <p data-revela>Preencha o formulário <br class="m">para receber nosso&nbsp;contato</p>
+        </div>
+        <div class="contato-form" data-revela>
+          <LeadForm formId="lead-form-site" preset="geral" variant="grade" idPrefix="form-field-" placeholders={ph} />
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Galeria de fotos" aria-hidden="true">
+    <button class="lb-fechar" type="button" aria-label="Fechar"><svg aria-hidden="true"><use href="#fechar"/></svg></button>
+    <figure class="lb-figura"><img alt=""></figure>
+    <div class="lb-barra">
+      <button type="button" class="lb-ant" aria-label="Foto anterior"><svg aria-hidden="true"><use href="#seta-esq"/></svg></button>
+      <span class="lb-contador" aria-live="polite">01 / 09</span>
+      <button type="button" class="lb-prox" aria-label="Próxima foto"><svg aria-hidden="true"><use href="#seta-dir"/></svg></button>
+    </div>
+  </div>
+
+  <SiteFooter home />
+
+  <script>
+    import { initForms } from '../scripts/forms';
+    import { initDateFields } from '../scripts/date-field';
+    import { initConditionalFields } from '../scripts/conditional-fields';
+    import '../scripts/home.js';
+
+    initConditionalFields();
+    initDateFields();
+    initForms();
+  </script>
+</Base>

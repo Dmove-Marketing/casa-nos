@@ -1,0 +1,30 @@
+---
+// Rodapé único do site (home, blog e páginas internas).
+// O WhatsApp abre o popup de atendimento do template (data-wa-open), nunca um link direto para wa.me.
+import config from '../../../config.json';
+
+interface Props {
+  /** true na home: o logo volta ao topo da própria página */
+  home?: boolean;
+}
+const { home = false } = Astro.props;
+const phone = config.whatsapp?.phone || '';
+const local = phone.replace(/^55/, '');
+const telefone = local.length >= 10 ? `(${local.slice(0, 2)}) ${local.slice(2, -4)}-${local.slice(-4)}` : '';
+---
+<footer class="rodape">
+  <svg class="rodape-onda" viewBox="0 0 70 42" aria-hidden="true"><use href="#onda" /></svg>
+  <div class="c">
+    <div class="rodape-canais">
+      <a href="https://www.instagram.com/casanos.oficial/" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#instagram" /></svg>@casanos.oficial</a>
+      {telefone && (
+        <a href="#whatsapp" data-wa-open="rodape" aria-label={`Falar com a CasaNós pelo WhatsApp: ${telefone}`}><svg aria-hidden="true"><use href="#whatsapp" /></svg>{telefone}</a>
+      )}
+    </div>
+    <a class="rodape-logo" href={home ? '#topo' : '/'} aria-label="CasaNós, voltar ao início"><svg viewBox="-1 0 83 169.5" aria-hidden="true"><use href="#logo" /></svg></a>
+    <div class="rodape-fim">
+      <span class="rodape-copy"><span class="nb">Copyright © 2026 CasaNós</span> — <span class="nb">Todos os direitos reservados</span></span>
+      <a class="credito" href="https://dmove.com.br" target="_blank" rel="noopener">Desenvolvido por <img src={`${config.media.cdn_base}/photos/logo-dmove.webp`} width="88" height="18" alt="Dmove Marketing" loading="lazy" /></a>
+    </div>
+  </div>
+</footer>
