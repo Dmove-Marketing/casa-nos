@@ -47,7 +47,6 @@
 .post__corpo li{margin-bottom:.35em}
 .post__corpo li::marker{color:var(--cor-mostarda)}
 .post__corpo img{border-radius:var(--raio-foto);margin:1.6em 0}
-.post__corpo img.retrato{width:min(100%,460px);margin-inline:auto}
 .post__corpo a.botao{color:var(--cor-papel)}
 .post__botao{margin:1.8em 0 2.4em;text-align:center}
 .post__assinatura{padding-top:1.4em;border-top:1px solid var(--cor-nevoa);font-size:.92em;line-height:1.6;color:var(--cor-texto-suave);text-align:center}

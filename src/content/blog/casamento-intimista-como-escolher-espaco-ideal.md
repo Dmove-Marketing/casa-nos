@@ -3,8 +3,8 @@ title: "Casamento intimista: como escolher o espaço ideal para celebrar sua his
 description: "Descubra como escolher o espaço ideal para um casamento intimista, com natureza, gastronomia autoral e hospitalidade no interior de São Paulo."
 date: "2026-11-26"
 category: "Casamentos"
-image: "https://media.dmove.com.br/clients/casa-nos/photos/blog-casamento-intimista-lago.webp"
-imageAlt: "Cerimônia de casamento montada à beira do lago ao entardecer, com arco de flores brancas e o coreto ao fundo"
+image: "https://media.dmove.com.br/clients/casa-nos/photos/blog-casamento-intimista-noivos-capa.webp"
+imageAlt: "Noivos dançando no corredor de tijolos da cerimônia ao ar livre, entre samambaias e um varal de luzes"
 ---
 
 Existem momentos na vida que merecem mais do que um belo cenário. Merecem um lugar onde cada abraço tenha tempo, cada encontro tenha significado e cada detalhe conte um pouco da sua história.
@@ -62,7 +62,7 @@ Para os convidados que desejam prolongar a experiência, a CasaNós conta també
 
 Assim, o casamento pode se transformar em mais do que uma celebração: uma oportunidade de desacelerar, reencontrar pessoas queridas e desfrutar de momentos especiais juntos.
 
-<img class="retrato" src="https://media.dmove.com.br/clients/casa-nos/photos/blog-casamento-intimista-noivos.webp" width="900" height="1600" loading="lazy" decoding="async" alt="Noivos dançando no corredor de tijolos da cerimônia ao ar livre, entre samambaias, palmeiras e um varal de luzes">
+<img src="https://media.dmove.com.br/clients/casa-nos/photos/blog-casamento-intimista-lago.webp" width="1600" height="897" loading="lazy" decoding="async" alt="Cerimônia de casamento montada à beira do lago ao entardecer, com arco de flores brancas e o coreto ao fundo">
 
 ## Escolha uma gastronomia que também conte histórias
 
