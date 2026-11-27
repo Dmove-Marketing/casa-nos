@@ -24,7 +24,7 @@ const enderecoUrl = 'https://www.google.com/maps/search/?api=1&query=Rua%20Dr.%2
   title={title}
   description={description}
   canonical={canonical}
-  ogImage={`${photos}/hero-1600.webp`}
+  ogImage={`${photos}/bio-1600.webp`}
   theme="light"
   noIndex={true}
   favicon={`${photos}/favicon.webp`}
@@ -33,8 +33,8 @@ const enderecoUrl = 'https://www.google.com/maps/search/?api=1&query=Rua%20Dr.%2
 >
   <Fragment slot="head">
     <meta name="theme-color" content="#E2D7C8" />
-    <link rel="preload" as="image" type="image/webp" href={`${photos}/hero-celular.webp`} media="(max-width: 560px)" fetchpriority="high" />
-    <link rel="preload" as="image" type="image/webp" href={`${photos}/hero-1600.webp`} media="(min-width: 561px)" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/webp" href={`${photos}/bio-celular.webp`} media="(max-width: 560px)" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/webp" href={`${photos}/bio-1600.webp`} media="(min-width: 561px)" fetchpriority="high" />
     <link rel="preload" href={`${fonts}/Franie-Light.woff2`} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={`${fonts}/ClarityCity-Light.woff2`} as="font" type="font/woff2" crossorigin />
   </Fragment>
@@ -45,14 +45,12 @@ const enderecoUrl = 'https://www.google.com/maps/search/?api=1&query=Rua%20Dr.%2
     <section id="bio" class="bio">
       <figure class="bio-foto">
         <picture>
-          <source media="(max-width: 560px)" type="image/webp" srcset={`${photos}/hero-celular.webp`} />
+          <source media="(max-width: 560px)" type="image/webp" srcset={`${photos}/bio-celular.webp`} />
           <img
-            src={`${photos}/hero-1600.webp`}
-            srcset={`${photos}/hero-1600.webp 1600w, ${photos}/hero-2560.webp 2560w`}
-            sizes="100vw"
-            alt="Cerimônia montada à beira do lago, com corredor florido e o coreto ao fundo"
-            width="2560"
-            height="1435"
+            src={`${photos}/bio-1600.webp`}
+            alt="Mesa de banquete posta ao entardecer em frente à casa amarela, sob a pérgola florida e uma grande árvore"
+            width="1600"
+            height="899"
             fetchpriority="high"
           />
         </picture>
