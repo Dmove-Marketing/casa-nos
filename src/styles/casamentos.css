@@ -137,6 +137,10 @@
 .hosp-texto h2{margin:0;font-size:clamp(30px,2.3vw + 14px,48px)}
 .hosp-texto .texto{margin:18px 0 0;max-width:44ch}
 .hosp-foto{aspect-ratio:3/2}
+/* hospedagem: duas fotos no mesmo quadro, trocando em loop (~5 s cada, fusão de 1 s) */
+.hosp-troca img{position:absolute;inset:0}
+.hosp-troca img + img{opacity:0;animation:hosp-troca 12s ease-in-out infinite}
+@keyframes hosp-troca{0%,42%{opacity:0}50%,92%{opacity:1}100%{opacity:0}}
 .hosp-texto .texto.hosp-extra{margin-top:14px}
 /* o parágrafo fica em 3 linhas fixas: "...Valinhos Plaza Hotel." / "...apartamentos e bangalôs," /
    "além de... ainda mais agradável." Se a coluna estreitar, a fonte diminui um pouco para caber;
@@ -416,6 +420,7 @@
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  .hosp-troca img + img{animation:none!important}   /* sem troca: fica só a primeira foto */
   .js .aparece{opacity:1;transform:none}
 }
 
