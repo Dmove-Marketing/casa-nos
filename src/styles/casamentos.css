@@ -156,7 +156,13 @@
   .hosp-frase{white-space:nowrap}
 }
 @media (min-width:1101px) and (max-width:1279px){.hosp-corpo{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}}
-.contato{background:var(--cor-papel)}
+/* contato: a foto da cerimônia é o fundo da seção, com película escura para o texto claro */
+.contato{position:relative;isolation:isolate;overflow:hidden;background:var(--cor-vinho)}
+.contato-fundo{position:absolute;inset:0;z-index:-1;margin:0}
+.contato-fundo img{width:100%;height:100%;object-fit:cover;object-position:50% 55%}
+.contato-fundo::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(30,14,12,.78) 0,rgba(30,14,12,.62) 50%,rgba(30,14,12,.4) 100%)}
+.contato-texto h2{color:var(--cor-papel)}
+.contato-texto .texto{color:rgba(251,247,241,.9)}
 .contato .cartao{background:#fff}
 
 /* ===================== GALERIA ===================== */
@@ -201,10 +207,9 @@
    Uma linha só quando cabe com pelo menos 13,5 px; senão 2 linhas (rua / bairro, cidade e CEP)
    e, em coluna bem estreita, 3 linhas (o CEP desce) */
 .contato-endereco{margin-top:24px;font-style:normal}
-.contato-foto{margin:32px 0 0;aspect-ratio:16/9}
-.contato-endereco a{display:inline-flex;align-items:center;gap:10px;font-size:14px;line-height:1.5;color:var(--cor-texto-suave);text-decoration:none;transition:color .25s}
-.contato-endereco a:hover{color:var(--cor-rubi)}
-.contato-endereco svg{flex:none;width:18px;height:18px;color:var(--cor-rubi)}
+.contato-endereco a{display:inline-flex;align-items:center;gap:10px;font-size:14px;line-height:1.5;color:rgba(251,247,241,.82);text-decoration:none;transition:color .25s}
+.contato-endereco a:hover{color:var(--cor-papel)}
+.contato-endereco svg{flex:none;width:18px;height:18px;color:var(--cor-mostarda)}
 .end-sep1,.end-br2,.end-curto{display:none}
 @container (min-width:600px){
   .contato-endereco a{font-size:min(14px,(100cqi - 28px) / 42.4)}
@@ -222,6 +227,7 @@
   .contato-texto .texto{margin-inline:auto;max-width:60ch}
   .contato-endereco a{text-align:left}
   .contato .cartao{width:100%;max-width:760px;margin:0 auto}
+  .contato-fundo::after{background:rgba(30,14,12,.64)}
 }
 
 /* ===================== RESPONSIVO ===================== */
@@ -335,7 +341,6 @@
   .contato-endereco svg{width:16px;height:16px}
   /* endereço em uma linha só: rua e cidade (bairro e CEP ficam no mapa) */
   .contato-endereco .end-texto{display:none}
-  .contato-foto{display:none}
   .contato-endereco .end-curto{display:inline;white-space:nowrap}
   .contato-endereco a{font-size:min(13px,(100cqi - 24px) / 25.1)}   /* 23,5em de texto + folga */
   .contato .cartao{padding:14px 14px 16px;border-radius:4px}
