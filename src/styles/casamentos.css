@@ -58,11 +58,12 @@
 /* ===================== AUTORIDADE ===================== */
 /* faixa rubi: quebra o creme entre o hero e o conceito e dá peso aos números */
 .autoridade{padding:clamp(52px,5.2vw,80px) 0;background:var(--cor-rubi)}
-/* sempre em uma linha: em telas menores, a fonte e os espaços diminuem para caber */
-.fatos{--g:clamp(14px,3.2vw,64px);list-style:none;margin:0;padding:0;display:flex;justify-content:center;align-items:baseline;flex-wrap:nowrap;gap:var(--g);font-family:var(--fonte-titulo);font-weight:300;color:var(--cor-papel);font-size:min(clamp(24px,1.4vw + 14px,36px),(min(var(--largura),100vw - 2*var(--respiro)) - 4*var(--g) - 16px) / 27.6);line-height:1.2;text-align:center}
-.fatos li{white-space:nowrap}
+/* sempre numa faixa só: em telas menores, a fonte e os espaços diminuem para caber */
+.fatos{--g:clamp(14px,3.2vw,64px);list-style:none;margin:0;padding:0;display:flex;justify-content:center;align-items:center;flex-wrap:nowrap;gap:var(--g);font-family:var(--fonte-titulo);font-weight:300;color:var(--cor-papel);font-size:min(clamp(24px,1.4vw + 14px,36px),(min(var(--largura),100vw - 2*var(--respiro)) - 4*var(--g) - 16px) / 22.3);line-height:1.15;text-align:center}
+.fatos li{display:inline-flex;align-items:center;white-space:nowrap}
 .fatos li + li::before{content:"";display:inline-block;width:6px;height:6px;margin-right:var(--g);border-radius:50%;background:var(--cor-mostarda);vertical-align:middle;transform:translateY(-.15em)}
-.br-fato{display:none}
+/* cada diferencial em duas linhas ("Melhor localização / do interior de SP"): a frase em uma linha só deixava a fonte pequena demais */
+.br-fato{display:inline}
 .letreiro{display:none}
 @keyframes corre{to{transform:translateX(-50%)}}
 
@@ -88,7 +89,7 @@
 .espacos .topo-secao{margin-bottom:clamp(36px,4vw,56px)}
 /* espaços (computador): foto grande à esquerda; à direita, o nome e a legenda do espaço ativo
    e, embaixo, a lista dos 6 espaços para navegar (passar o mouse, clicar ou teclado) */
-.espacos-lista{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);grid-template-rows:auto clamp(24px,2.4vw,36px) repeat(6,auto);align-content:start;column-gap:clamp(40px,5vw,88px)}
+.espacos-lista{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);grid-template-rows:auto clamp(24px,2.4vw,37px) repeat(7,auto);align-content:start;column-gap:clamp(40px,5vw,88px)}
 .espaco{display:contents}
 .espaco .foto{grid-column:1;grid-row:1 / -1;min-height:clamp(380px,30vw,460px);opacity:0;transition:opacity .7s var(--ease)}
 .espaco .foto img{position:absolute;inset:0;transform:scale(1.03);transition:transform 1.6s var(--ease)}
@@ -100,7 +101,8 @@
 .espaco-leg{margin:12px 0 0;max-width:36ch;font-size:clamp(16px,.2vw + 14px,17px);line-height:1.45;color:var(--cor-texto)}
 .espaco h3{grid-column:2;margin:0;border-top:1px solid var(--cor-linha);font-size:inherit}
 .espaco:nth-child(1) h3{grid-row:3}.espaco:nth-child(2) h3{grid-row:4}.espaco:nth-child(3) h3{grid-row:5}
-.espaco:nth-child(4) h3{grid-row:6}.espaco:nth-child(5) h3{grid-row:7}.espaco:nth-child(6) h3{grid-row:8;border-bottom:1px solid var(--cor-linha)}
+.espaco:nth-child(4) h3{grid-row:6}.espaco:nth-child(5) h3{grid-row:7}.espaco:nth-child(6) h3{grid-row:8}
+.espaco:nth-child(7) h3{grid-row:9;border-bottom:1px solid var(--cor-linha)}
 .espaco-botao{display:flex;align-items:center;gap:14px;width:100%;min-height:48px;padding:0;border:0;background:none;text-align:left;font-family:var(--fonte-texto);font-size:16px;font-weight:400;line-height:1.3;color:var(--cor-texto-suave);cursor:pointer;transition:color .3s}
 .espaco-num{flex:none;width:2ch;font-size:12px;font-weight:500;letter-spacing:.06em;color:var(--cor-mostarda)}
 .espaco-botao:hover,.espaco.ativo .espaco-botao{color:var(--cor-rubi)}
@@ -135,6 +137,7 @@
 .hosp-texto h2{margin:0;font-size:clamp(30px,2.3vw + 14px,48px)}
 .hosp-texto .texto{margin:18px 0 0;max-width:44ch}
 .hosp-foto{aspect-ratio:3/2}
+.hosp-texto .texto.hosp-extra{margin-top:14px}
 /* o parágrafo fica em 3 linhas fixas: "...Valinhos Plaza Hotel." / "...apartamentos e bangalôs," /
    "além de... ainda mais agradável." Se a coluna estreitar, a fonte diminui um pouco para caber;
    com a coluna abaixo de 540 px (celular), cada frase vira duas linhas, em 6 linhas no total */
@@ -198,6 +201,7 @@
    Uma linha só quando cabe com pelo menos 13,5 px; senão 2 linhas (rua / bairro, cidade e CEP)
    e, em coluna bem estreita, 3 linhas (o CEP desce) */
 .contato-endereco{margin-top:24px;font-style:normal}
+.contato-foto{margin:32px 0 0;aspect-ratio:16/9}
 .contato-endereco a{display:inline-flex;align-items:center;gap:10px;font-size:14px;line-height:1.5;color:var(--cor-texto-suave);text-decoration:none;transition:color .25s}
 .contato-endereco a:hover{color:var(--cor-rubi)}
 .contato-endereco svg{flex:none;width:18px;height:18px;color:var(--cor-rubi)}
@@ -331,6 +335,7 @@
   .contato-endereco svg{width:16px;height:16px}
   /* endereço em uma linha só: rua e cidade (bairro e CEP ficam no mapa) */
   .contato-endereco .end-texto{display:none}
+  .contato-foto{display:none}
   .contato-endereco .end-curto{display:inline;white-space:nowrap}
   .contato-endereco a{font-size:min(13px,(100cqi - 24px) / 25.1)}   /* 23,5em de texto + folga */
   .contato .cartao{padding:14px 14px 16px;border-radius:4px}
@@ -385,10 +390,10 @@
   .rodape .rodape-dmove img{width:56px}
   .rodape-traco{display:none}
   .rodape-br{display:inline}
-  /* celular: a mesma linha, com cada número quebrado em duas linhas para manter a fonte legível */
-  .br-fato{display:inline}
-  .fatos{align-items:center;font-size:min(24px,(100vw - 2*var(--respiro) - 4*var(--g) - 16px) / 15.6);line-height:1.15}
-  .fatos li{display:inline-flex;align-items:center}
+  /* celular (sem o letreiro, quando o movimento está reduzido): os três diferenciais empilhados, um por linha */
+  .fatos{flex-direction:column;gap:8px;font-size:min(22px,(100vw - 2*var(--respiro)) / 19.6)}
+  .fatos li + li::before{display:none}
+  .br-fato{display:none}
 }
 @media (max-width:640px) and (prefers-reduced-motion:no-preference){
   /* celular: faixa corrida com os três números (com movimento reduzido, fica a versão parada em 3 colunas) */
